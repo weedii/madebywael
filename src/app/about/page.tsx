@@ -49,7 +49,7 @@ export default function AboutPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="py-12 md:py-24">
+      <section className="py-12 md:py-24 flex justify-center">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_450px] items-center">
             <motion.div
@@ -123,7 +123,7 @@ export default function AboutPage() {
       </section>
 
       {/* Skills Section */}
-      <section className="py-12 md:py-24 bg-muted/50">
+      <section className="py-12 md:py-24 bg-muted/50 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
             className="flex flex-col items-center justify-center space-y-4 text-center"
@@ -465,7 +465,7 @@ export default function AboutPage() {
       </section>
 
       {/* Connect Section */}
-      <section className="py-12 md:py-24">
+      <section className="py-12 md:py-24 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
             className="mx-auto max-w-3xl text-center space-y-4"

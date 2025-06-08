@@ -131,7 +131,7 @@ export default function ProjectsPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-muted/50 py-12 md:py-24">
+      <section className="bg-muted/50 py-12 md:py-24 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
             className="mx-auto max-w-3xl space-y-4 text-center"
@@ -150,7 +150,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Filter Section */}
-      <section className="py-8 md:py-12">
+      <section className="py-8 md:py-12 flex justify-center">
         <div className="container px-4 md:px-6">
           <div className="mx-auto max-w-5xl space-y-6">
             <div className="flex flex-col gap-4 sm:flex-row">
@@ -190,7 +190,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-8 md:py-12">
+      <section className="py-8 md:py-12 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
             className="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -16,6 +16,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { motion } from "framer-motion";
 
 const routes = [
   { name: "Home", path: "/" },
@@ -27,26 +28,47 @@ const routes = [
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center">
-            <span className="text-xl font-bold">madebywael</span>
+    <header className={`sticky top-0 z-50 w-full border-b transition-all duration-300 flex justify-center ${
+      scrolled ? "bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 shadow-sm" : "bg-background/50 backdrop-blur-sm"
+    }`}>
+      <div className="container flex h-16 items-center justify-between mx-5">
+        <motion.div 
+          className="flex items-center gap-2"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Link href="/" className="flex items-center group">
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70 group-hover:scale-105 transition-transform duration-300">madebywael</span>
           </Link>
-        </div>
+        </motion.div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <motion.nav 
+          className="hidden md:flex items-center gap-6"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <NavigationMenu>
-            <NavigationMenuList>
-              {routes.map((route) => (
+            <NavigationMenuList className="gap-1">
+              {routes.map((route, index) => (
                 <NavigationMenuItem key={route.path}>
                   <Link href={route.path} legacyBehavior passHref>
                     <NavigationMenuLink
-                      className={navigationMenuTriggerStyle()}
+                      className={`${navigationMenuTriggerStyle()} ${pathname === route.path ? 'text-primary font-medium bg-primary/10' : ''} rounded-full`}
                       active={pathname === route.path}
                     >
                       {route.name}
@@ -57,7 +79,7 @@ export function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
           <ThemeToggle />
-        </nav>
+        </motion.nav>
 
         {/* Mobile Navigation Button */}
         <div className="flex md:hidden items-center gap-4">
@@ -65,7 +87,7 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-10 w-10"
+            className="h-10 w-10 rounded-full glass-effect hover:bg-primary/10"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
@@ -80,22 +102,39 @@ export function Navbar() {
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 z-50 bg-background">
+        <motion.div 
+          className="md:hidden fixed inset-0 top-16 z-50 bg-background/95 backdrop-blur-md"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+        >
           <nav className="container pt-6 pb-12 flex flex-col gap-4">
-            {routes.map((route) => (
-              <Link
+            {routes.map((route, index) => (
+              <motion.div
                 key={route.path}
-                href={route.path}
-                className={`px-4 py-3 text-lg font-medium transition-colors ${
-                  pathname === route.path ? "bg-accent" : "hover:bg-accent"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
               >
-                {route.name}
-              </Link>
+                <Link
+                  href={route.path}
+                  className={`px-5 py-3 text-lg font-medium transition-all duration-200 rounded-full flex items-center ${
+                    pathname === route.path 
+                      ? "bg-primary/10 text-primary" 
+                      : "hover:bg-accent hover:pl-7"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {route.name}
+                  {pathname === route.path && (
+                    <span className="ml-2 h-1.5 w-1.5 rounded-full bg-primary"></span>
+                  )}
+                </Link>
+              </motion.div>
             ))}
           </nav>
-        </div>
+        </motion.div>
       )}
     </header>
   );

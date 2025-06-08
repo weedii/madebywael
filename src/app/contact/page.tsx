@@ -48,7 +48,7 @@ export default function ContactPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-muted/50 py-12 md:py-24">
+      <section className="bg-muted/50 py-12 md:py-24 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
             className="mx-auto max-w-3xl space-y-4 text-center"
@@ -68,7 +68,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-12 md:py-24">
+      <section className="py-12 md:py-24 flex justify-center">
         <div className="container px-4 md:px-6">
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
             {/* Contact Form */}

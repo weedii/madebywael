@@ -86,34 +86,64 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-background py-24 md:py-32 flex justify-center">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
+      <section className="relative overflow-hidden bg-background pt-24 pb-20 md:py-32 flex justify-center">
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.07] dark:opacity-[0.04]"></div>
+        <div className="absolute top-20 right-[10%] w-72 h-72 bg-primary/10 rounded-full blur-[100px] animate-float"></div>
+        <div className="absolute bottom-10 left-[5%] w-64 h-64 bg-primary/15 rounded-full blur-[120px] animate-float" style={{ animationDelay: "2s" }}></div>
+        <div className="container px-4 md:px-6 relative z-10">
+          <div className="grid gap-8 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
             <motion.div 
-              className="flex flex-col justify-center space-y-4"
+              className="flex flex-col justify-center space-y-6"
               initial="hidden"
               animate="visible"
               variants={fadeIn}
             >
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+              <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary mb-2 w-fit glass-effect">
+                <span className="animate-pulse mr-1.5 h-2 w-2 rounded-full bg-primary"></span> Available for new projects
+              </div>
+              <div className="space-y-4">
+                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl xl:text-6xl/none text-gradient">
                   Hi, I&apos;m Wael
-                  <span className="text-primary inline-block ml-2">👋</span>
+                  <span className="inline-block ml-2 transform hover:rotate-12 transition-transform duration-300">👋</span>
                 </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Software Engineer specialized in building beautiful, accessible, and performant web applications
+                <p className="max-w-[600px] text-muted-foreground md:text-xl leading-relaxed">
+                  Software Engineer specialized in building <span className="text-primary font-medium">beautiful</span>, <span className="text-primary font-medium">accessible</span>, and <span className="text-primary font-medium">performant</span> web applications with modern technologies.
                 </p>
               </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Button asChild size="lg">
+              <div className="flex flex-col gap-3 min-[400px]:flex-row pt-4">
+                <Button asChild size="lg" className="gap-2 group rounded-full">
                   <Link href="/projects">
                     View My Work
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <Link href="/contact">Contact Me</Link>
+                <Button variant="outline" size="lg" asChild className="group rounded-full">
+                  <Link href="/contact" className="gap-2">
+                    Contact Me
+                    <motion.span 
+                      animate={{ x: [0, 3, 0] }} 
+                      transition={{ repeat: Infinity, repeatDelay: 2, duration: 0.4 }}
+                    >
+                      <Github className="h-4 w-4" />
+                    </motion.span>
+                  </Link>
                 </Button>
+              </div>
+              <div className="flex gap-5 pt-6 items-center">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" 
+                   className="text-muted-foreground hover:text-primary transition-colors hover-scale">
+                  <Github className="h-5 w-5" />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                   className="text-muted-foreground hover:text-primary transition-colors hover-scale">
+                  <FileText className="h-5 w-5" />
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                   className="text-muted-foreground hover:text-primary transition-colors hover-scale">
+                  <Code className="h-5 w-5" />
+                </a>
+                <div className="h-5 w-px bg-border mx-1"></div>
+                <span className="text-sm text-muted-foreground">Let's connect</span>
               </div>
             </motion.div>
             <motion.div 
@@ -122,14 +152,41 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="relative h-[350px] w-[350px] sm:h-[400px] sm:w-[400px] lg:h-[500px] lg:w-[500px]">
+              <div className="relative h-[350px] w-[350px] sm:h-[400px] sm:w-[400px] lg:h-[450px] lg:w-[450px]">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 blur-md animate-float" style={{ animationDelay: "1s" }}></div>
+                <div className="absolute inset-4 rounded-full bg-card border shadow-lg glass-effect"></div>
                 <Image
-                  src="https://images.unsplash.com/photo-1555952517-2e8e729e0b44?q=80&w=1528&auto=format&fit=crop"
-                  alt="Developer Coding"
+                  src="https://media.licdn.com/dms/image/v2/D4D03AQEg87AgQ4B1Rw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1707826089661?e=1755129600&v=beta&t=-QBhnkh8SDhnGhlVflMXqu7bixy-v-YP8dq4WkPWsXc"
+                  alt="Wael Profile"
                   fill
-                  className="object-cover rounded-full"
+                  className="object-cover rounded-full p-2"
                   priority
                 />
+                <motion.div 
+                  className="absolute -bottom-4 -right-4 glass-effect px-4 py-2 rounded-full shadow-md flex items-center gap-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                >
+                  <span className="text-sm font-medium">Full Stack Developer</span>
+                  <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                </motion.div>
+                <motion.div 
+                  className="absolute -top-2 -left-2 glass-effect p-2 rounded-full shadow-md"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1, duration: 0.5 }}
+                >
+                  <span className="text-2xl">💻</span>
+                </motion.div>
+                <motion.div 
+                  className="absolute top-1/4 -right-8 glass-effect p-2 rounded-full shadow-md"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.2, duration: 0.5 }}
+                >
+                  <span className="text-2xl">🚀</span>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -137,30 +194,57 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section className="py-12 md:py-16 bg-muted/50 flex justify-center">
-        <div className="container px-4 md:px-6">
+      <section className="py-20 md:py-28 bg-muted/30 flex justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] dark:opacity-[0.03]"></div>
+        <div className="absolute right-0 bottom-0 w-1/3 h-1/2 bg-primary/5 blur-[120px] rounded-full"></div>
+        <div className="container px-4 md:px-6 relative z-10">
           <motion.div 
-            className="flex flex-col items-center justify-center space-y-4 text-center"
+            className="flex flex-col items-center justify-center space-y-6 text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
           >
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Skills & Technologies</h2>
+            <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary glass-effect">
+              What I work with
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">Skills & Technologies</h2>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                 Technologies I've been working with recently
               </p>
             </div>
-            <div className="mx-auto grid max-w-5xl grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 pt-8">
-              {["TypeScript", "React", "Next.js", "Node.js", "MongoDB", "Tailwind CSS", "GraphQL", "Redux", "Express", "PostgreSQL", "AWS", "Git"].map((skill) => (
+            <div className="mx-auto grid max-w-5xl grid-cols-3 gap-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 pt-12">
+              {[
+                { name: "TypeScript", icon: "📝", delay: 0 },
+                { name: "React", icon: "⚛️", delay: 0.1 },
+                { name: "Next.js", icon: "▲", delay: 0.2 },
+                { name: "Node.js", icon: "🟢", delay: 0.3 },
+                { name: "MongoDB", icon: "🍃", delay: 0.4 },
+                { name: "Tailwind CSS", icon: "🌊", delay: 0.5 },
+                { name: "GraphQL", icon: "📊", delay: 0.6 },
+                { name: "Redux", icon: "🔄", delay: 0.7 },
+                { name: "Express", icon: "🚂", delay: 0.8 },
+                { name: "PostgreSQL", icon: "🐘", delay: 0.9 },
+                { name: "AWS", icon: "☁️", delay: 1.0 },
+                { name: "Git", icon: "🔄", delay: 1.1 }
+              ].map((skill) => (
                 <motion.div 
-                  key={skill}
-                  className="flex items-center justify-center rounded-lg border bg-card p-4 shadow-sm"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  key={skill.name}
+                  className="flex flex-col items-center justify-center rounded-xl glass-effect p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:shadow-primary/10 hover:border-primary/30 group"
+                  whileHover={{ y: -5, scale: 1.05 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 300, 
+                    damping: 15,
+                    delay: skill.delay * 0.1
+                  }}
                 >
-                  <span className="text-sm font-medium">{skill}</span>
+                  <span className="text-2xl mb-2 group-hover:animate-bounce">{skill.icon}</span>
+                  <span className="text-sm font-medium group-hover:text-primary transition-colors">{skill.name}</span>
                 </motion.div>
               ))}
             </div>
@@ -169,43 +253,61 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <section className="py-12 md:py-24 flex justify-center">
-        <div className="container px-4 md:px-6">
+      <section className="py-20 md:py-28 flex justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] dark:opacity-[0.02]"></div>
+        <div className="absolute left-0 top-0 w-1/3 h-1/2 bg-primary/5 blur-[120px] rounded-full"></div>
+        <div className="container px-4 md:px-6 relative z-10">
           <motion.div 
-            className="flex flex-col items-center justify-center space-y-4 text-center"
+            className="flex flex-col items-center justify-center space-y-6 text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
           >
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Featured Projects</h2>
+            <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary glass-effect">
+              Portfolio
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">Featured Projects</h2>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Some of my recent work
+                Some of my recent work that showcases my skills and expertise
               </p>
             </div>
           </motion.div>
           
           <motion.div 
-            className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3"
+            className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-14 md:grid-cols-2 lg:grid-cols-3"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
           >
-            {featuredProjects.map((project) => (
-              <motion.div key={project.id} variants={fadeIn}>
-                <Card className="overflow-hidden h-full flex flex-col">
-                  <div className="relative h-48">
+            {featuredProjects.map((project, index) => (
+              <motion.div 
+                key={project.id} 
+                variants={fadeIn}
+                className="group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+              >
+                <Card className="overflow-hidden h-full flex flex-col border-border/40 group-hover:border-primary/30 transition-all duration-300 glass-effect">
+                  <div className="relative h-56 overflow-hidden">
+                    <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300"></div>
                     <Image
                       src={project.image}
                       alt={project.title}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
-                  <CardHeader>
-                    <CardTitle>{project.title}</CardTitle>
+                  <CardHeader className="relative">
+                    <div className="absolute -top-10 right-4 glass-effect py-1 px-3 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-1">
+                      {project.technologies.length} technologies
+                    </div>
+                    <CardTitle className="text-gradient">{project.title}</CardTitle>
                     <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-grow">
@@ -213,7 +315,7 @@ export default function Home() {
                       {project.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary"
+                          className="inline-flex items-center rounded-full glass-effect px-2.5 py-1 text-xs font-medium text-primary transition-all duration-200 hover:bg-primary/20 hover-scale"
                         >
                           {tech}
                         </span>
@@ -221,10 +323,10 @@ export default function Home() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button asChild variant="ghost" className="w-full">
-                      <Link href={`/projects/${project.slug}`}>
+                    <Button asChild variant="ghost" className="w-full group rounded-full hover:bg-primary/10">
+                      <Link href={`/projects/${project.slug}`} className="flex items-center justify-center gap-2">
                         View Project
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
                       </Link>
                     </Button>
                   </CardFooter>
@@ -234,10 +336,10 @@ export default function Home() {
           </motion.div>
           
           <div className="flex justify-center">
-            <Button asChild variant="outline" size="lg">
-              <Link href="/projects">
+            <Button asChild variant="outline" size="lg" className="group rounded-full">
+              <Link href="/projects" className="flex items-center gap-2">
                 View All Projects
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
             </Button>
           </div>
@@ -245,17 +347,22 @@ export default function Home() {
       </section>
 
       {/* Latest Blog Posts Section */}
-      <section className="py-12 md:py-24 bg-muted/50 flex justify-center">
-        <div className="container px-4 md:px-6">
+      <section className="py-20 md:py-28 bg-muted/30 flex justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] dark:opacity-[0.02]"></div>
+        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-[120px] rounded-full"></div>
+        <div className="container px-4 md:px-6 relative z-10">
           <motion.div 
-            className="flex flex-col items-center justify-center space-y-4 text-center"
+            className="flex flex-col items-center justify-center space-y-6 text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
           >
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Latest Blog Posts</h2>
+            <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary glass-effect">
+              Blog
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">Latest Blog Posts</h2>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                 Technical articles and thoughts on web development
               </p>
@@ -263,33 +370,44 @@ export default function Home() {
           </motion.div>
           
           <motion.div 
-            className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3"
+            className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-14 md:grid-cols-2 lg:grid-cols-3"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
           >
-            {latestPosts.map((post) => (
-              <motion.div key={post.id} variants={fadeIn}>
-                <Card className="h-full flex flex-col">
-                  <CardHeader>
-                    <CardTitle>{post.title}</CardTitle>
-                    <CardDescription>
+            {latestPosts.map((post, index) => (
+              <motion.div 
+                key={post.id} 
+                variants={fadeIn} 
+                className="group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+              >
+                <Card className="h-full flex flex-col border-border/40 group-hover:border-primary/30 transition-all duration-300 glass-effect relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-xl transform translate-x-8 -translate-y-8 group-hover:bg-primary/10 transition-colors duration-500"></div>
+                  
+                  <CardHeader className="relative">
+                    <div className="inline-flex items-center rounded-full px-2.5 py-1 text-xs glass-effect text-primary mb-2 w-fit">
                       {new Date(post.publishedAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
                       })}
-                    </CardDescription>
+                    </div>
+                    <CardTitle className="text-gradient group-hover:translate-x-1 transition-transform duration-300">{post.title}</CardTitle>
                   </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="text-muted-foreground">{post.excerpt}</p>
+                  <CardContent className="flex-grow pt-2 relative">
+                    <p className="text-muted-foreground leading-relaxed">{post.excerpt}</p>
+                    <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </CardContent>
                   <CardFooter>
-                    <Button asChild variant="ghost" className="w-full">
-                      <Link href={`/blog/${post.slug}`}>
+                    <Button asChild variant="ghost" className="w-full group rounded-full hover:bg-primary/10">
+                      <Link href={`/blog/${post.slug}`} className="flex items-center justify-center gap-2">
                         Read More
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
                       </Link>
                     </Button>
                   </CardFooter>
@@ -299,10 +417,10 @@ export default function Home() {
           </motion.div>
           
           <div className="flex justify-center">
-            <Button asChild variant="outline" size="lg">
-              <Link href="/blog">
+            <Button asChild variant="outline" size="lg" className="group rounded-full">
+              <Link href="/blog" className="flex items-center gap-2">
                 View All Posts
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
             </Button>
           </div>
@@ -310,35 +428,74 @@ export default function Home() {
       </section>
       
       {/* CTA Section */}
-      <section className="py-12 md:py-24 flex justify-center">
-        <div className="container px-4 md:px-6">
+      <section className="py-20 md:py-28 flex justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] dark:opacity-[0.02]"></div>
+        <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-primary/5 blur-[150px] rounded-full"></div>
+        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-primary/10 blur-[100px] rounded-full"></div>
+        <div className="container px-4 md:px-6 relative z-10">
           <motion.div 
-            className="flex flex-col items-center justify-center space-y-4 text-center"
+            className="flex flex-col items-center justify-center space-y-6 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="mx-auto max-w-3xl space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Let&apos;s Work Together</h2>
-              <p className="text-muted-foreground md:text-xl">
-                I'm currently available for freelance work and open to new opportunities.
-                If you have a project that you want to get started or need help with, feel free to contact me.
-              </p>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center pt-4">
-                <Button asChild size="lg">
+            <div className="mx-auto max-w-3xl space-y-6">
+              <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary glass-effect mx-auto">
+                Get in touch
+              </div>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">Let&apos;s Work Together</h2>
+              <div className="relative">
+                <p className="text-muted-foreground md:text-xl leading-relaxed">
+                  I'm currently available for freelance work and open to new opportunities.
+                  If you have a project that you want to get started or need help with, feel free to contact me.
+                </p>
+                <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-primary/10 rounded-full blur-lg animate-float"></div>
+                <div className="absolute -top-4 -left-4 w-8 h-8 bg-primary/10 rounded-full blur-lg animate-float" style={{ animationDelay: "2s" }}></div>
+              </div>
+              <div className="flex flex-col gap-3 min-[400px]:flex-row justify-center pt-6">
+                <Button asChild size="lg" className="gap-2 group rounded-full">
                   <Link href="/contact">
                     Get in Touch
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
-                <Button variant="outline" size="lg" asChild>
+                <Button variant="outline" size="lg" asChild className="gap-2 group rounded-full">
                   <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
-                    <Github className="mr-2 h-4 w-4" />
+                    <Github className="h-4 w-4" />
                     GitHub Profile
                   </Link>
                 </Button>
               </div>
+              <motion.div 
+                className="pt-10 flex justify-center gap-8 flex-wrap"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      delay: 0.3,
+                      staggerChildren: 0.1
+                    }
+                  }
+                }}
+              >
+                {["TypeScript", "React", "Next.js", "Node.js"].map((tech) => (
+                  <motion.span 
+                    key={tech}
+                    className="text-sm text-muted-foreground glass-effect px-3 py-1 rounded-full"
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                  >
+                    {tech}
+                  </motion.span>
+                ))}
+              </motion.div>
             </div>
           </motion.div>
         </div>

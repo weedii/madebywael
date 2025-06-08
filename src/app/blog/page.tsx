@@ -134,7 +134,7 @@ export default function BlogPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-muted/50 py-12 md:py-24">
+      <section className="bg-muted/50 py-12 md:py-24 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
             className="mx-auto max-w-3xl space-y-4 text-center"
@@ -154,7 +154,7 @@ export default function BlogPage() {
       </section>
 
       {/* Filter Section */}
-      <section className="py-8 md:py-12">
+      <section className="py-8 md:py-12 flex justify-center">
         <div className="container px-4 md:px-6">
           <div className="mx-auto max-w-3xl space-y-6">
             <div className="relative flex-1">
@@ -192,7 +192,7 @@ export default function BlogPage() {
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="py-8 md:py-12">
+      <section className="py-8 md:py-12 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
             className="mx-auto grid max-w-3xl gap-8"
