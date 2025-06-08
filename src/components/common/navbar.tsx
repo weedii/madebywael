@@ -103,37 +103,69 @@ export function Navbar() {
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
         <motion.div 
-          className="md:hidden fixed inset-0 top-16 z-50 bg-background/95 backdrop-blur-md"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
+          className="md:hidden fixed inset-0 top-16 z-40 bg-background/95 backdrop-blur-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
         >
-          <nav className="container pt-6 pb-12 flex flex-col gap-4">
-            {routes.map((route, index) => (
-              <motion.div
-                key={route.path}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.3 }}
-              >
-                <Link
-                  href={route.path}
-                  className={`px-5 py-3 text-lg font-medium transition-all duration-200 rounded-full flex items-center ${
-                    pathname === route.path 
-                      ? "bg-primary/10 text-primary" 
-                      : "hover:bg-accent hover:pl-7"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {route.name}
-                  {pathname === route.path && (
-                    <span className="ml-2 h-1.5 w-1.5 rounded-full bg-primary"></span>
-                  )}
-                </Link>
-              </motion.div>
-            ))}
-          </nav>
+          <motion.div
+            className="h-full flex flex-col"
+            initial={{ y: -20 }}
+            animate={{ y: 0 }}
+            exit={{ y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex-1 px-6 py-8">
+              <nav className="space-y-3">
+                {routes.map((route, index) => (
+                  <motion.div
+                    key={route.path}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
+                  >
+                    <Link
+                      href={route.path}
+                      className={`group flex items-center justify-between px-6 py-4 text-lg font-medium rounded-xl transition-all duration-200 ${
+                        pathname === route.path 
+                          ? "bg-primary/10 text-primary border border-primary/20" 
+                          : "hover:bg-accent/50 hover:translate-x-2"
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <span>{route.name}</span>
+                      {pathname === route.path ? (
+                        <motion.div
+                          className="h-2 w-2 rounded-full bg-primary"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.2 }}
+                        />
+                      ) : (
+                        <motion.div
+                          className="h-1 w-6 bg-muted-foreground/30 rounded-full group-hover:bg-primary/50 transition-colors"
+                          whileHover={{ width: 32 }}
+                        />
+                      )}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+            </div>
+            
+            {/* Footer section */}
+            <motion.div 
+              className="border-t bg-muted/20 px-6 py-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.3 }}
+            >
+              <p className="text-sm text-muted-foreground text-center">
+                Made with ❤️ by Wael
+              </p>
+            </motion.div>
+          </motion.div>
         </motion.div>
       )}
     </header>

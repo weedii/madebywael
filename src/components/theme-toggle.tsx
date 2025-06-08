@@ -31,21 +31,21 @@ export function ThemeToggle() {
       <DropdownMenuContent align="end" className="glass-effect border-primary/20">
         <DropdownMenuItem 
           onClick={() => setTheme("light")}
-          className={`flex items-center gap-2 ${theme === "light" ? "text-primary font-medium" : ""}`}
+          className={`flex items-center gap-2 cursor-pointer ${theme === "light" ? "text-primary font-medium" : ""}`}
         >
           <Sun className="h-4 w-4 text-amber-500" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => setTheme("dark")}
-          className={`flex items-center gap-2 ${theme === "dark" ? "text-primary font-medium" : ""}`}
+          className={`flex items-center gap-2 cursor-pointer ${theme === "dark" ? "text-primary font-medium" : ""}`}
         >
           <Moon className="h-4 w-4 text-primary" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => setTheme("system")}
-          className={`flex items-center gap-2 ${theme === "system" ? "text-primary font-medium" : ""}`}
+          className={`flex items-center gap-2 cursor-pointer ${theme === "system" ? "text-primary font-medium" : ""}`}
         >
           <span className="text-xs h-4 w-4 flex items-center justify-center">💻</span>
           System
