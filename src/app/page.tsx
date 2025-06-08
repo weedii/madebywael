@@ -86,11 +86,11 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-20 md:py-32 flex justify-center">
+      <section className="relative overflow-hidden bg-background pt-24 pb-20 md:py-32 flex justify-center ">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.07] dark:opacity-[0.04]"></div>
         <div className="absolute top-20 right-[10%] w-72 h-72 bg-primary/10 rounded-full blur-[100px] animate-float"></div>
         <div className="absolute bottom-10 left-[5%] w-64 h-64 bg-primary/15 rounded-full blur-[120px] animate-float" style={{ animationDelay: "2s" }}></div>
-        <div className="container px-4 md:px-6 relative z-10">
+        <div className="container px-4 md:px-6 relative z-10 max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
             <motion.div 
               className="flex flex-col justify-center space-y-6"

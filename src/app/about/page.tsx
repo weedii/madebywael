@@ -50,7 +50,7 @@ export default function AboutPage() {
     <MainLayout>
       {/* Hero Section */}
       <section className="py-12 md:py-24 flex justify-center">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 max-w-7xl">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_450px] items-center">
             <motion.div
               className="flex flex-col justify-center space-y-4"

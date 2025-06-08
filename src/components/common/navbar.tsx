@@ -43,7 +43,7 @@ export function Navbar() {
     <header className={`sticky top-0 z-50 w-full border-b transition-all duration-300 flex justify-center ${
       scrolled ? "bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 shadow-sm" : "bg-background/50 backdrop-blur-sm"
     }`}>
-      <div className="container flex h-16 items-center justify-between mx-5">
+      <div className="container flex h-16 items-center justify-between mx-5 max-w-7xl">
         <motion.div 
           className="flex items-center gap-2"
           initial={{ opacity: 0, x: -20 }}
@@ -103,7 +103,7 @@ export function Navbar() {
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
         <motion.div 
-          className="md:hidden fixed inset-0 top-16 z-40 bg-background/95 backdrop-blur-lg"
+          className="md:hidden fixed inset-0 top-16 z-40"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -116,7 +116,7 @@ export function Navbar() {
             exit={{ y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex-1 px-6 py-8">
+            <div className="flex-1 px-6 py-8 bg-gray-100 dark:bg-zinc-950">
               <nav className="space-y-3">
                 {routes.map((route, index) => (
                   <motion.div
@@ -156,7 +156,7 @@ export function Navbar() {
             
             {/* Footer section */}
             <motion.div 
-              className="border-t bg-muted/20 px-6 py-6"
+              className="border-t border-primary/20 bg-gray-200 dark:bg-zinc-950 px-6 py-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.3 }}
