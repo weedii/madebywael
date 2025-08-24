@@ -193,15 +193,25 @@ export default function ProjectsPage() {
       <section className="py-8 md:py-12 flex justify-center">
         <div className="container px-4 md:px-6">
           <motion.div
-            className="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            className="mx-auto grid max-w-5xl grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
           >
             {filteredProjects.length > 0 ? (
               filteredProjects.map((project) => (
-                <motion.div key={project.id} variants={fadeIn}>
-                  <Card className="overflow-hidden h-full flex flex-col">
+                <motion.div
+                  key={project.id}
+                  variants={fadeIn}
+                  whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+                  className="relative"
+                >
+                  <div
+                    className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/30 to-primary/10 blur-md animate-float"
+                    style={{ animationDelay: `${parseInt(project.id) * 0.2}s` }}
+                  ></div>
+
+                  <Card className="overflow-hidden h-full flex flex-col border-none relative">
                     <div className="relative h-48">
                       <Image
                         src={project.image}

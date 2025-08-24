@@ -199,6 +199,7 @@ export default function Home() {
                 </span>
               </div>
             </motion.div>
+
             <motion.div
               className="flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -210,7 +211,9 @@ export default function Home() {
                   className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 blur-md animate-float"
                   style={{ animationDelay: "1s" }}
                 ></div>
+
                 <div className="absolute inset-4 rounded-full bg-card border shadow-lg glass-effect"></div>
+
                 <Image
                   src="https://media.licdn.com/dms/image/v2/D4D03AQEg87AgQ4B1Rw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1707826089661?e=1755129600&v=beta&t=-QBhnkh8SDhnGhlVflMXqu7bixy-v-YP8dq4WkPWsXc"
                   alt="Wael Profile"
@@ -218,6 +221,7 @@ export default function Home() {
                   className="object-cover rounded-full p-2"
                   priority
                 />
+
                 <motion.div
                   className="absolute -bottom-4 -right-4 glass-effect px-4 py-2 rounded-full shadow-md flex items-center gap-2"
                   initial={{ opacity: 0, y: 20 }}
@@ -229,6 +233,7 @@ export default function Home() {
                   </span>
                   <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
                 </motion.div>
+
                 <motion.div
                   className="absolute -top-2 -left-2 glass-effect p-2 rounded-full shadow-md"
                   initial={{ opacity: 0, scale: 0 }}
@@ -237,6 +242,7 @@ export default function Home() {
                 >
                   <span className="text-2xl">💻</span>
                 </motion.div>
+
                 <motion.div
                   className="absolute top-1/4 -right-8 glass-effect p-2 rounded-full shadow-md"
                   initial={{ opacity: 0, scale: 0 }}
@@ -252,7 +258,7 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 md:py-28 bg-muted/30 flex justify-center relative overflow-hidden">
+      {/* <section className="py-20 md:py-28 bg-muted/30 flex justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] dark:opacity-[0.03]"></div>
         <div className="absolute right-0 bottom-0 w-1/3 h-1/2 bg-primary/5 blur-[120px] rounded-full"></div>
         <div className="container px-4 md:px-6 relative z-10">
@@ -314,7 +320,7 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* Featured Projects Section */}
       <section className="py-20 md:py-28 flex justify-center relative overflow-hidden">
@@ -332,11 +338,11 @@ export default function Home() {
               Portfolio
             </div>
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">
+              {/* <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">
                 Featured Projects
-              </h2>
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Some of my recent work that showcases my skills and expertise
+              </h2> */}
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-2xl">
+                Some of my recent work
               </p>
             </div>
           </motion.div>
@@ -427,7 +433,7 @@ export default function Home() {
       </section>
 
       {/* Latest Blog Posts Section */}
-      <section className="py-20 md:py-28 bg-muted/30 flex justify-center relative overflow-hidden">
+      {/* <section className="py-20 md:py-28 bg-muted/30 flex justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] dark:opacity-[0.02]"></div>
         <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-[120px] rounded-full"></div>
         <div className="container px-4 md:px-6 relative z-10">
@@ -523,7 +529,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 md:py-28 flex justify-center relative overflow-hidden">

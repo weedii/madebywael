@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { redirect } from "next/navigation";
 
 // Dummy data for blog posts
 const posts = [
@@ -130,6 +131,8 @@ export default function BlogPage() {
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
+
+  if (true) return redirect("/");
 
   return (
     <MainLayout>
