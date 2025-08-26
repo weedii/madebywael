@@ -100,7 +100,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="flex h-screen bg-background">
       {/* Mobile Sidebar Toggle */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
+      <div className="lg:hidden fixed top-7 right-8 z-50">
         <Button
           variant="outline"
           size="icon"

@@ -98,7 +98,8 @@ export default function AdminDashboard() {
               Welcome back, {session?.user?.name || "Admin"}
             </p>
           </div>
-          <div>
+
+          <div className="hidden lg:block">
             <Button asChild>
               <Link href="/">View Website</Link>
             </Button>
