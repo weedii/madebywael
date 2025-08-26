@@ -85,12 +85,30 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
+  // Auto-expand submenu if current path matches any submenu item
+  React.useEffect(() => {
+    sidebarNavItems.forEach((item) => {
+      if (item.submenu) {
+        const hasActiveSubitem = item.submenu.some((subitem) =>
+          pathname === subitem.href
+        );
+        if (hasActiveSubitem) {
+          setOpenSubmenu(item.title);
+        }
+      }
+    });
+  }, [pathname]);
+
   const toggleSubmenu = (title: string) => {
     setOpenSubmenu(openSubmenu === title ? null : title);
   };
 
   const isActive = (href: string) => {
     return pathname === href;
+  };
+
+  const isSubmenuActive = (submenu: Array<{ href: string }>) => {
+    return submenu.some((subitem) => pathname === subitem.href);
   };
 
   const handleSignOut = () => {
@@ -172,9 +190,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                       <Button
                         variant="ghost"
                         className={`w-full justify-start ${
-                          item.submenu.some((subitem) => isActive(subitem.href))
-                            ? "bg-accent"
-                            : ""
+                          isSubmenuActive(item.submenu) ? "bg-accent" : ""
                         }`}
                         onClick={() => toggleSubmenu(item.title)}
                       >
@@ -197,7 +213,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                               key={subindex}
                               variant="ghost"
                               className={`w-full justify-start ${
-                                isActive(subitem.href) ? "bg-accent" : ""
+                                pathname === subitem.href
+                                  ? "bg-accent"
+                                  : ""
                               }`}
                               asChild
                             >
