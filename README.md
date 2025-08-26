@@ -47,7 +47,7 @@ A modern personal website and portfolio built with Next.js, TypeScript, Tailwind
 
 3. **Create environment variables**
 
-   Create a `.env.local` file in the root directory:
+   Create a `.env` file in the root directory:
 
    ```env
    # Admin User Configuration
