@@ -30,44 +30,51 @@ A modern personal website and portfolio built with Next.js, TypeScript, Tailwind
 - Node.js 18.17 or later
 - **No database setup required!** 🎉
 
-### Quick Start (3 Steps)
+### Quick Start (6 Steps)
 
-1. **Install dependencies**
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/weedii/madebywael.git
+   cd madebywael
+   ```
+
+2. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. **Initialize the local database**
+3. **Create environment variables**
+
+   Create a `.env.local` file in the root directory:
+
+   ```env
+   # Admin User Configuration
+   ADMIN_EMAIL=admin@madebywael.com
+   ADMIN_PASSWORD=Admin123!
+   ADMIN_NAME=Admin User
+
+   # NextAuth (Required)
+   NEXTAUTH_SECRET=your-secret-key-here
+   NEXTAUTH_URL=http://localhost:3000
+   ```
+
+4. **Initialize the local database**
 
    ```bash
    npm run init-db
    ```
 
-3. **Start development server**
+5. **Start development server**
 
    ```bash
    npm run dev
    ```
 
-4. **Open [http://localhost:3000](http://localhost:3000)** in your browser
+6. **Open [http://localhost:3000](http://localhost:3000)** in your browser
 
 That's it! The app is now running with a local file-based database.
-
-### Environment Variables (Optional)
-
-Create a `.env.local` file to customize admin credentials:
-
-```env
-# Admin User Configuration (Optional - has defaults)
-ADMIN_EMAIL=admin@madebywael.com
-ADMIN_PASSWORD=Admin123!
-ADMIN_NAME=Admin User
-
-# NextAuth (Required)
-NEXTAUTH_SECRET=your-secret-key-here
-NEXTAUTH_URL=http://localhost:3000
-```
 
 ### Local Database System
 
