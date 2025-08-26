@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectToDatabase } from "@/lib/db/connection";
-import { User } from "@/lib/db/models";
+import { userDB } from "@/lib/local-db";
 import bcrypt from "bcryptjs";
 
 if (!process.env.NEXTAUTH_SECRET) {
@@ -9,9 +8,9 @@ if (!process.env.NEXTAUTH_SECRET) {
 }
 
 // Default admin credentials from environment variables
-const defaultAdminEmail = process.env.ADMIN_EMAIL || "admin@madebywael.com";
-const defaultAdminPassword = process.env.ADMIN_PASSWORD || "Admin123!";
-const defaultAdminName = process.env.ADMIN_NAME || "Admin User";
+const defaultAdminEmail = process.env.ADMIN_EMAIL;
+const defaultAdminPassword = process.env.ADMIN_PASSWORD;
+const defaultAdminName = process.env.ADMIN_NAME;
 
 const handler = NextAuth({
   providers: [
@@ -27,10 +26,12 @@ const handler = NextAuth({
         }
 
         try {
-          // Check if using default admin credentials
-          if (credentials.email === defaultAdminEmail && 
-              credentials.password === defaultAdminPassword) {
-            // Return the default admin user
+          // FIRST: Check if using default admin credentials
+          if (
+            credentials.email === defaultAdminEmail &&
+            credentials.password === defaultAdminPassword
+          ) {
+            console.log("✅ Default admin login successful");
             return {
               id: "default-admin-id",
               email: defaultAdminEmail,
@@ -39,37 +40,51 @@ const handler = NextAuth({
             };
           }
 
-          // If not default admin, check database
-          await connectToDatabase();
-          
-          const user = await User.findOne({ email: credentials.email });
-          
+          // SECOND: Check local file-based user storage
+          console.log(
+            "🔄 Attempting local file authentication for:",
+            credentials.email
+          );
+
+          const user = await userDB.findOne({ email: credentials.email });
+
           if (!user) {
+            console.log(
+              "❌ User not found in local storage:",
+              credentials.email
+            );
             return null;
           }
-          
+
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
             user.password
           );
-          
+
           if (!isPasswordValid) {
+            console.log("❌ Invalid password for user:", credentials.email);
             return null;
           }
-          
+
+          console.log("✅ Local file user login successful:", user.email);
           return {
-            id: user._id.toString(),
+            id: user.id,
             email: user.email,
             name: user.name,
             role: user.role,
           };
         } catch (error) {
-          console.error("Authentication error:", error);
-          
-          // If database connection fails but using default admin credentials
-          if (credentials.email === defaultAdminEmail && 
-              credentials.password === defaultAdminPassword) {
-            // Return the default admin user even if DB is down
+          console.error(
+            "⚠️ Local file authentication failed:",
+            (error as Error).message
+          );
+
+          // Fallback: If local file auth fails but using default admin credentials
+          if (
+            credentials.email === defaultAdminEmail &&
+            credentials.password === defaultAdminPassword
+          ) {
+            console.log("✅ Fallback to default admin login");
             return {
               id: "default-admin-id",
               email: defaultAdminEmail,
@@ -77,7 +92,7 @@ const handler = NextAuth({
               role: "admin",
             };
           }
-          
+
           return null;
         }
       },
@@ -109,4 +124,4 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-export { handler as GET, handler as POST }; 
+export { handler as GET, handler as POST };
