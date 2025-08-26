@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, Search, ExternalLink, Github } from "lucide-react";
 
 import { MainLayout } from "@/components/common/main-layout";
 import { Button } from "@/components/ui/button";
@@ -17,80 +17,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-// Dummy data for projects
-const projects = [
-  {
-    id: "1",
-    title: "E-commerce Platform",
-    description:
-      "A full-stack e-commerce platform built with Next.js, MongoDB and Stripe",
-    image:
-      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1470&auto=format&fit=crop",
-    technologies: ["Next.js", "MongoDB", "Stripe", "Tailwind CSS"],
-    slug: "ecommerce-platform",
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "Task Management App",
-    description:
-      "A collaborative task management application with real-time updates",
-    image:
-      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1472&auto=format&fit=crop",
-    technologies: ["React", "Node.js", "Socket.io", "PostgreSQL"],
-    slug: "task-management-app",
-    featured: true,
-  },
-  {
-    id: "3",
-    title: "Weather Forecast Dashboard",
-    description:
-      "Interactive weather dashboard with 7-day forecasts and location search",
-    image:
-      "https://images.unsplash.com/photo-1592210454359-9043f067919b?q=80&w=1470&auto=format&fit=crop",
-    technologies: ["React", "Weather API", "Chart.js", "Tailwind CSS"],
-    slug: "weather-dashboard",
-    featured: true,
-  },
-  {
-    id: "4",
-    title: "Personal Finance Tracker",
-    description:
-      "Track expenses, income, and investments with detailed analytics",
-    image:
-      "https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?q=80&w=1470&auto=format&fit=crop",
-    technologies: ["Vue.js", "Firebase", "D3.js", "Vuetify"],
-    slug: "finance-tracker",
-    featured: false,
-  },
-  {
-    id: "5",
-    title: "Fitness Tracking App",
-    description:
-      "Mobile app for tracking workouts, progress, and health metrics",
-    image:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1470&auto=format&fit=crop",
-    technologies: ["React Native", "Firebase", "Redux", "Expo"],
-    slug: "fitness-app",
-    featured: false,
-  },
-  {
-    id: "6",
-    title: "Recipe Sharing Platform",
-    description: "Community platform for sharing and discovering recipes",
-    image:
-      "https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?q=80&w=1374&auto=format&fit=crop",
-    technologies: ["Next.js", "PostgreSQL", "Cloudinary", "Prisma"],
-    slug: "recipe-platform",
-    featured: false,
-  },
-];
-
-// All unique technologies for filtering
-const allTechnologies = Array.from(
-  new Set(projects.flatMap((project) => project.technologies))
-).sort();
+interface Project {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  coverImage?: string;
+  images: string[];
+  technologies: string[];
+  featured: boolean;
+  githubUrl?: string;
+  liveUrl?: string;
+  published: boolean;
+  publishedAt?: Date;
+  updatedAt: Date;
+  createdAt: Date;
+}
 
 // Animation variants
 const fadeIn = {
@@ -113,8 +58,39 @@ const staggerContainer = {
 };
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load projects from API
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/projects");
+        if (response.ok) {
+          const data = await response.json();
+          // Only show published projects on the public page
+          const publishedProjects = data.filter(
+            (project: Project) => project.published
+          );
+          setProjects(publishedProjects);
+        }
+      } catch (error) {
+        console.error("Failed to load projects:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProjects();
+  }, []);
+
+  // Get all unique technologies for filtering
+  const allTechnologies = Array.from(
+    new Set(projects.flatMap((project) => project.technologies))
+  ).sort();
 
   // Filter projects based on search query and selected technology
   const filteredProjects = projects.filter((project) => {
@@ -127,6 +103,19 @@ export default function ProjectsPage() {
 
     return matchesSearch && matchesTech;
   });
+
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading projects...</p>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
@@ -145,49 +134,59 @@ export default function ProjectsPage() {
             <p className="text-muted-foreground md:text-xl">
               A collection of software engineering projects I've worked on
             </p>
+            {projects.length > 0 && (
+              <p className="text-sm text-muted-foreground">
+                {projects.length} project{projects.length !== 1 ? "s" : ""}{" "}
+                available
+              </p>
+            )}
           </motion.div>
         </div>
       </section>
 
-      {/* Filter Section */}
-      <section className="py-8 md:py-12 flex justify-center">
-        <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-5xl space-y-6">
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <div className="relative flex-1">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search projects..."
-                  className="pl-8"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+      {/* Filter Section - Only show if there are projects */}
+      {projects.length > 0 && (
+        <section className="py-8 md:py-12 flex justify-center">
+          <div className="container px-4 md:px-6">
+            <div className="mx-auto max-w-5xl space-y-6">
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="relative flex-1">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search projects..."
+                    className="pl-8"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant={selectedTech === null ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedTech(null)}
-              >
-                All
-              </Button>
-              {allTechnologies.map((tech) => (
-                <Button
-                  key={tech}
-                  variant={selectedTech === tech ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedTech(tech)}
-                >
-                  {tech}
-                </Button>
-              ))}
+              {allTechnologies.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={selectedTech === null ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedTech(null)}
+                  >
+                    All
+                  </Button>
+                  {allTechnologies.map((tech) => (
+                    <Button
+                      key={tech}
+                      variant={selectedTech === tech ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedTech(tech)}
+                    >
+                      {tech}
+                    </Button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Projects Grid */}
       <section className="py-8 md:py-12 flex justify-center">
@@ -212,39 +211,57 @@ export default function ProjectsPage() {
                   ></div>
 
                   <Card className="overflow-hidden h-full flex flex-col border-none relative">
-                    <div className="relative h-48">
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-cover"
-                      />
-                      {project.featured && (
-                        <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 text-xs font-medium rounded">
-                          Featured
-                        </div>
-                      )}
-                    </div>
+                    {project.coverImage && (
+                      <div className="relative h-48">
+                        <Image
+                          src={project.coverImage}
+                          alt={project.title}
+                          fill
+                          className="object-cover"
+                          onError={(e) => {
+                            // Hide image container if image fails to load
+                            const target = e.target as HTMLElement;
+                            const container = target.closest(
+                              ".relative"
+                            ) as HTMLElement;
+                            if (container) {
+                              container.style.display = "none";
+                            }
+                          }}
+                        />
+                        {project.featured && (
+                          <Badge className="absolute top-2 right-2">
+                            Featured
+                          </Badge>
+                        )}
+                      </div>
+                    )}
                     <CardHeader>
-                      <CardTitle>{project.title}</CardTitle>
+                      <CardTitle className="flex items-center justify-between">
+                        <span>{project.title}</span>
+                        {project.featured && !project.coverImage && (
+                          <Badge variant="secondary">Featured</Badge>
+                        )}
+                      </CardTitle>
                       <CardDescription>{project.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-grow">
                       <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech) => (
-                          <span
+                          <Badge
                             key={tech}
-                            className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary"
+                            variant="outline"
+                            className="text-xs"
                           >
                             {tech}
-                          </span>
+                          </Badge>
                         ))}
                       </div>
                     </CardContent>
                     <CardFooter>
                       <Button asChild variant="ghost" className="w-full">
-                        <Link href={`/projects/${project.slug}`}>
-                          View Project
+                        <Link href={`/projects/${project.id}`}>
+                          View Details
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
@@ -252,20 +269,44 @@ export default function ProjectsPage() {
                   </Card>
                 </motion.div>
               ))
+            ) : projects.length === 0 ? (
+              <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
+                <div className="mb-4">
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                    <ArrowRight className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">
+                    No Projects Yet
+                  </h3>
+                  <p className="text-muted-foreground max-w-md">
+                    Projects will appear here once they are published. Check
+                    back soon!
+                  </p>
+                </div>
+              </div>
             ) : (
               <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
-                <p className="text-muted-foreground mb-4">
-                  No projects found matching your filters.
-                </p>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSelectedTech(null);
-                  }}
-                >
-                  Clear Filters
-                </Button>
+                <div className="mb-4">
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">
+                    No Projects Found
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    No projects match your current filters. Try adjusting your
+                    search.
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedTech(null);
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
               </div>
             )}
           </motion.div>

@@ -1,13 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Code, FileText, Github } from "lucide-react";
+import {
+  ArrowRight,
+  Code,
+  FileText,
+  Github,
+  Star,
+  ExternalLink,
+} from "lucide-react";
 
 import { MainLayout } from "@/components/common/main-layout";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -17,39 +25,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-// Dummy data for the initial UI
-const featuredProjects = [
-  {
-    id: "1",
-    title: "E-commerce Platform",
-    description:
-      "A full-stack e-commerce platform built with Next.js, MongoDB and Stripe",
-    image:
-      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1470&auto=format&fit=crop",
-    technologies: ["Next.js", "MongoDB", "Stripe", "Tailwind CSS"],
-    slug: "ecommerce-platform",
-  },
-  {
-    id: "2",
-    title: "Task Management App",
-    description:
-      "A collaborative task management application with real-time updates",
-    image:
-      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1472&auto=format&fit=crop",
-    technologies: ["React", "Node.js", "Socket.io", "PostgreSQL"],
-    slug: "task-management-app",
-  },
-  {
-    id: "3",
-    title: "Weather Forecast Dashboard",
-    description:
-      "Interactive weather dashboard with 7-day forecasts and location search",
-    image:
-      "https://images.unsplash.com/photo-1592210454359-9043f067919b?q=80&w=1470&auto=format&fit=crop",
-    technologies: ["React", "Weather API", "Chart.js", "Tailwind CSS"],
-    slug: "weather-dashboard",
-  },
-];
+interface Project {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  coverImage?: string;
+  images: string[];
+  technologies: string[];
+  featured: boolean;
+  githubUrl?: string;
+  liveUrl?: string;
+  published: boolean;
+  publishedAt?: Date;
+  updatedAt: Date;
+  createdAt: Date;
+}
 
 const latestPosts = [
   {
@@ -99,6 +91,33 @@ const staggerContainer = {
 };
 
 export default function Home() {
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load featured projects from API
+  useEffect(() => {
+    const loadFeaturedProjects = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/projects");
+        if (response.ok) {
+          const data = await response.json();
+          // Get published and featured projects, limit to 6 for homepage
+          const featured = data
+            .filter((project: Project) => project.published && project.featured)
+            .slice(0, 6);
+          setFeaturedProjects(featured);
+        }
+      } catch (error) {
+        console.error("Failed to load featured projects:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadFeaturedProjects();
+  }, []);
+
   return (
     <MainLayout>
       {/* Hero Section */}
@@ -215,7 +234,7 @@ export default function Home() {
                 <div className="absolute inset-4 rounded-full bg-card border shadow-lg glass-effect"></div>
 
                 <Image
-                  src="https://media.licdn.com/dms/image/v2/D4D03AQEg87AgQ4B1Rw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1707826089661?e=1755129600&v=beta&t=-QBhnkh8SDhnGhlVflMXqu7bixy-v-YP8dq4WkPWsXc"
+                  src="/me.jpg"
                   alt="Wael Profile"
                   fill
                   className="object-cover rounded-full p-2"
@@ -335,100 +354,159 @@ export default function Home() {
             variants={fadeIn}
           >
             <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary glass-effect">
-              Portfolio
+              <Star className="w-3 h-3 mr-1" />
+              Featured Work
             </div>
             <div className="space-y-3">
-              {/* <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">
-                Featured Projects
-              </h2> */}
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-2xl">
-                Some of my recent work
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">
+                Latest Projects
+              </h2>
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                Some of my recent work that I'm most proud of
               </p>
             </div>
           </motion.div>
 
-          <motion.div
-            className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-14 md:grid-cols-2 lg:grid-cols-3"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {featuredProjects.map((project, index) => (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Loading projects...</p>
+              </div>
+            </div>
+          ) : featuredProjects.length > 0 ? (
+            <>
               <motion.div
-                key={project.id}
-                variants={fadeIn}
-                className="group"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                className="mx-auto grid max-w-6xl grid-cols-1 gap-8 py-14 md:grid-cols-2 lg:grid-cols-3"
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.2, duration: 0.6 }}
+                variants={staggerContainer}
               >
-                <Card className="overflow-hidden h-full flex flex-col border-border/40 group-hover:border-primary/30 transition-all duration-300 glass-effect">
-                  <div className="relative h-56 overflow-hidden">
-                    <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300"></div>
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  </div>
-                  <CardHeader className="relative">
-                    <div className="absolute -top-10 right-4 glass-effect py-1 px-3 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-1">
-                      {project.technologies.length} technologies
-                    </div>
-                    <CardTitle className="text-gradient">
-                      {project.title}
-                    </CardTitle>
-                    <CardDescription>{project.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="inline-flex items-center rounded-full glass-effect px-2.5 py-1 text-xs font-medium text-primary transition-all duration-200 hover:bg-primary/20 hover-scale"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      asChild
-                      variant="ghost"
-                      className="w-full group rounded-full hover:bg-primary/10"
-                    >
-                      <Link
-                        href={`/projects/${project.slug}`}
-                        className="flex items-center justify-center gap-2"
-                      >
-                        View Project
-                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
+                {featuredProjects.map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    variants={fadeIn}
+                    className="group"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                  >
+                    <Card className="overflow-hidden h-full flex flex-col border-border/40 group-hover:border-primary/30 transition-all duration-300 glass-effect group-hover:shadow-lg group-hover:shadow-primary/10">
+                      {project.coverImage && (
+                        <div className="relative h-48 overflow-hidden">
+                          <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300"></div>
+                          <Image
+                            src={project.coverImage}
+                            alt={project.title}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          <div className="flex justify-center">
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="group rounded-full"
-            >
-              <Link href="/projects" className="flex items-center gap-2">
-                View All Projects
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-            </Button>
-          </div>
+                          {/* Featured badge */}
+                          <div className="absolute top-3 right-3">
+                            <Badge className="bg-primary/90 text-primary-foreground border-0">
+                              <Star className="w-3 h-3 mr-1 fill-current" />
+                              Featured
+                            </Badge>
+                          </div>
+
+                          {/* Action buttons overlay removed for now*/}
+                        </div>
+                      )}
+
+                      <CardHeader className="relative">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-gradient group-hover:text-primary transition-colors">
+                            {project.title}
+                          </CardTitle>
+                          {!project.coverImage && (
+                            <Badge variant="secondary">
+                              <Star className="w-3 h-3 mr-1 fill-current" />
+                              Featured
+                            </Badge>
+                          )}
+                        </div>
+                        <CardDescription className="line-clamp-2">
+                          {project.description}
+                        </CardDescription>
+                      </CardHeader>
+
+                      <CardContent className="flex-grow">
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.technologies.slice(0, 4).map((tech) => (
+                            <Badge
+                              key={tech}
+                              variant="outline"
+                              className="text-xs px-2 py-0.5 transition-all duration-200 hover:bg-primary/10 hover:border-primary/30"
+                            >
+                              {tech}
+                            </Badge>
+                          ))}
+                          {project.technologies.length > 4 && (
+                            <Badge
+                              variant="outline"
+                              className="text-xs px-2 py-0.5"
+                            >
+                              +{project.technologies.length - 4} more
+                            </Badge>
+                          )}
+                        </div>
+                      </CardContent>
+
+                      <CardFooter className="pt-2">
+                        <Button
+                          asChild
+                          variant="ghost"
+                          className="w-full group/btn rounded-full hover:bg-primary/10"
+                        >
+                          <Link
+                            href={`/projects/${project.id}`}
+                            className="flex items-center justify-center gap-2"
+                          >
+                            View Details
+                            <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
+                          </Link>
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <div className="flex justify-center">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="group rounded-full"
+                >
+                  <Link href="/projects" className="flex items-center gap-2">
+                    View All Projects
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                  </Link>
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">
+                No Featured Projects Yet
+              </h3>
+              <p className="text-muted-foreground max-w-md mb-6">
+                Featured projects will appear here once they are published and
+                marked as featured.
+              </p>
+              <Button asChild variant="outline">
+                <Link href="/projects">View All Projects</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -577,7 +655,7 @@ export default function Home() {
                   className="gap-2 group rounded-full"
                 >
                   <Link
-                    href="https://github.com"
+                    href="https://github.com/weedii"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -586,35 +664,6 @@ export default function Home() {
                   </Link>
                 </Button>
               </div>
-              <motion.div
-                className="pt-10 flex justify-center gap-8 flex-wrap"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      delay: 0.3,
-                      staggerChildren: 0.1,
-                    },
-                  },
-                }}
-              >
-                {["TypeScript", "React", "Next.js", "Node.js"].map((tech) => (
-                  <motion.span
-                    key={tech}
-                    className="text-sm text-muted-foreground glass-effect px-3 py-1 rounded-full"
-                    variants={{
-                      hidden: { opacity: 0, y: 10 },
-                      visible: { opacity: 1, y: 0 },
-                    }}
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </motion.div>
             </div>
           </motion.div>
         </div>
