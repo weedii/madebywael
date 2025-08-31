@@ -361,17 +361,11 @@ export default function AboutPage() {
                 }}
               >
                 {/* Fallback when no skills data is available */}
-                <motion.div variants={fadeIn}>
-                  <Card className="h-full">
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-bold mb-4">
-                        Skills & Technologies
-                      </h3>
-                      <p className="text-muted-foreground">
-                        Skills information will be loaded from the database.
-                      </p>
-                    </CardContent>
-                  </Card>
+                <motion.div variants={fadeIn} className="col-span-full text-center">
+                  <h3 className="text-xl font-bold mb-2">No Skills Added Yet</h3>
+                  <p className="text-muted-foreground">
+                    Skills and technologies will appear here once they are added. Check back soon!
+                  </p>
                 </motion.div>
               </motion.div>
             )}

@@ -49,14 +49,14 @@ export function Footer() {
                   Home
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/blog"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Blog
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/projects"

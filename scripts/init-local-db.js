@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const readline = require('readline');
 
 // Data directory path
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -21,8 +22,16 @@ function addTimestamps(entity) {
   };
 }
 
-// Default data for each collection
-const defaultData = {
+// Empty data structure for each collection
+const emptyData = {
+  settings: [],
+  blogs: [],
+  skills: {},
+  projects: []
+};
+
+// Sample data for each collection
+const sampleData = {
   settings: [
     addTimestamps({
       title: "Made by Wael - Portfolio",
@@ -84,8 +93,27 @@ const defaultData = {
   ]
 };
 
+// Function to get user choice
+function getUserChoice() {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    console.log('\n🚀 Database Initialization Options:');
+    console.log('1. Initialize with empty data (clean start)');
+    console.log('2. Initialize with sample data (demo content)');
+    
+    rl.question('\nChoose an option (1 or 2): ', (answer) => {
+      rl.close();
+      resolve(answer.trim());
+    });
+  });
+}
+
 // Initialize data files
-async function initializeDataFiles() {
+async function initializeDataFiles(withSampleData = false) {
   try {
     console.log('🚀 Initializing local database...');
     
@@ -98,8 +126,12 @@ async function initializeDataFiles() {
       console.log('📁 Created data directory');
     }
     
+    // Choose data based on option
+    const dataToUse = withSampleData ? sampleData : emptyData;
+    const dataType = withSampleData ? 'sample data' : 'empty structure';
+    
     // Initialize each collection
-    for (const [collection, data] of Object.entries(defaultData)) {
+    for (const [collection, data] of Object.entries(dataToUse)) {
       const filePath = path.join(DATA_DIR, `${collection}.json`);
       
       try {
@@ -122,11 +154,11 @@ async function initializeDataFiles() {
       }
       
       await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-      const recordCount = collection === 'skills' ? '1 object' : `${data.length} records`;
+      const recordCount = collection === 'skills' ? '1 object' : `${Array.isArray(data) ? data.length : 0} records`;
       console.log(`✅ Initialized ${collection}.json with ${recordCount}`);
     }
     
-    console.log('🎉 Local database initialization complete!');
+    console.log(`🎉 Local database initialization complete with ${dataType}!`);
     console.log('\n📝 Default admin credentials:');
     console.log('   Email: admin@madebywael.com');
     console.log('   Password: Admin123!');
@@ -187,8 +219,25 @@ async function createAdminUser() {
 
 // Run initialization
 async function main() {
-  await initializeDataFiles();
-  await createAdminUser();
+  try {
+    const choice = await getUserChoice();
+    
+    if (choice === '1') {
+      console.log('\n🗃️  Initializing with empty data...');
+      await initializeDataFiles(false);
+    } else if (choice === '2') {
+      console.log('\n📦 Initializing with sample data...');
+      await initializeDataFiles(true);
+    } else {
+      console.log('\n❌ Invalid choice. Please run the script again and choose 1 or 2.');
+      process.exit(1);
+    }
+    
+    await createAdminUser();
+  } catch (error) {
+    console.error('❌ Script failed:', error);
+    process.exit(1);
+  }
 }
 
 if (require.main === module) {
