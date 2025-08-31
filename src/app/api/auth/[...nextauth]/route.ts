@@ -70,7 +70,7 @@ const handler = NextAuth({
           return {
             id: user.id,
             email: user.email,
-            name: user.name,
+            name: user.fullName,
             role: user.role,
           };
         } catch (error) {
