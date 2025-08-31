@@ -258,4 +258,5 @@ export const socialDB = new LocalDB<import("./types").SocialLinks>("social");
 export const settingsDB = new LocalDB<import("./types").SiteSettings>(
   "settings"
 );
+export const skillsDB = new LocalDB<import("./types").Skills>("skills");
 export const userDB = new LocalDB<import("./types").User>("users");

@@ -82,6 +82,20 @@ const defaultData = {
     })
   ],
   
+  skills: [
+    addTimestamps({
+      languages: [
+        "JavaScript", "TypeScript", "Python", "Java", "Go"
+      ],
+      frameworksAndStack: [
+        "React", "Next.js", "Node.js", "Spring Boot", "FastAPI", "Express.js"
+      ],
+      toolsAndServices: [
+        "Docker", "Git/GitHub", "AWS", "MongoDB", "PostgreSQL", "Redis"
+      ]
+    })
+  ],
+  
   projects: [
     addTimestamps({
       title: "Portfolio Website",

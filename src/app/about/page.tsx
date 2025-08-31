@@ -31,6 +31,15 @@ interface PersonalInfo {
   createdAt: string;
 }
 
+interface Skills {
+  id: string;
+  languages: string[];
+  frameworksAndStack: string[];
+  toolsAndServices: string[];
+  updatedAt: string;
+  createdAt: string;
+}
+
 interface Settings {
   id: string;
   title: string;
@@ -72,17 +81,20 @@ const fadeInRight = {
 export default function AboutPage() {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
+  const [skills, setSkills] = useState<Skills | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load personal info and settings
+  // Load personal info, settings, and skills
   useEffect(() => {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const [personalResponse, settingsResponse] = await Promise.all([
-          fetch("/api/personal"),
-          fetch("/api/settings"),
-        ]);
+        const [personalResponse, settingsResponse, skillsResponse] =
+          await Promise.all([
+            fetch("/api/personal"),
+            fetch("/api/settings"),
+            fetch("/api/skills"),
+          ]);
 
         if (personalResponse.ok) {
           const personalData = await personalResponse.json();
@@ -97,6 +109,13 @@ export default function AboutPage() {
             setSettings(settingsData[0]); // Get the first record
           }
         }
+
+        if (skillsResponse.ok) {
+          const skillsData = await skillsResponse.json();
+          if (skillsData.length > 0) {
+            setSkills(skillsData[0]); // Get the first record
+          }
+        }
       } catch (error) {
         console.error("Failed to load data:", error);
       } finally {
@@ -106,38 +125,6 @@ export default function AboutPage() {
 
     loadData();
   }, []);
-
-  // Group skills by categories for better organization
-  const categorizeSkills = (skills: string[]) => {
-    const frontend = skills.filter((skill) =>
-      [
-        "React",
-        "Next.js",
-        "JavaScript",
-        "TypeScript",
-        "Tailwind CSS",
-        "HTML",
-        "CSS",
-      ].includes(skill)
-    );
-    const backend = skills.filter((skill) =>
-      [
-        "Node.js",
-        "Python",
-        "Java",
-        "MongoDB",
-        "PostgreSQL",
-        "Express",
-        "FastAPI",
-        "Spring Boot",
-      ].includes(skill)
-    );
-    const tools = skills.filter(
-      (skill) => !frontend.includes(skill) && !backend.includes(skill)
-    );
-
-    return { frontend, backend, tools };
-  };
 
   if (isLoading) {
     return (
@@ -280,7 +267,7 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="mx-auto max-w-5xl py-12">
-            {personalInfo?.skills && personalInfo.skills.length > 0 ? (
+            {skills ? (
               <motion.div
                 className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
                 initial="hidden"
@@ -294,115 +281,80 @@ export default function AboutPage() {
                   },
                 }}
               >
-                {(() => {
-                  const { frontend, backend, tools } = categorizeSkills(
-                    personalInfo.skills
-                  );
-                  return (
-                    <>
-                      {/* Frontend Skills */}
-                      {frontend.length > 0 && (
-                        <motion.div variants={fadeIn}>
-                          <Card>
-                            <CardContent className="p-6">
-                              <h3 className="text-xl font-bold mb-4">
-                                Frontend Development
-                              </h3>
-                              <div className="space-y-3">
-                                {frontend.map((skill) => (
-                                  <div
-                                    key={skill}
-                                    className="flex items-center"
-                                  >
-                                    <CheckCircle className="h-4 w-4 text-primary mr-3" />
-                                    <span className="text-sm">{skill}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      )}
-
-                      {/* Backend Skills */}
-                      {backend.length > 0 && (
-                        <motion.div variants={fadeIn}>
-                          <Card>
-                            <CardContent className="p-6">
-                              <h3 className="text-xl font-bold mb-4">
-                                Backend Development
-                              </h3>
-                              <div className="space-y-3">
-                                {backend.map((skill) => (
-                                  <div
-                                    key={skill}
-                                    className="flex items-center"
-                                  >
-                                    <CheckCircle className="h-4 w-4 text-primary mr-3" />
-                                    <span className="text-sm">{skill}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      )}
-
-                      {/* Other Tools & Technologies */}
-                      {tools.length > 0 && (
-                        <motion.div variants={fadeIn}>
-                          <Card>
-                            <CardContent className="p-6">
-                              <h3 className="text-xl font-bold mb-4">
-                                Tools & Technologies
-                              </h3>
-                              <div className="space-y-3">
-                                {tools.map((skill) => (
-                                  <div
-                                    key={skill}
-                                    className="flex items-center"
-                                  >
-                                    <CheckCircle className="h-4 w-4 text-primary mr-3" />
-                                    <span className="text-sm">{skill}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      )}
-
-                      {/* If we have less than 3 categories, show all skills in one card */}
-                      {frontend.length === 0 &&
-                        backend.length === 0 &&
-                        tools.length > 0 && (
-                          <motion.div
-                            variants={fadeIn}
-                            className="md:col-span-2 lg:col-span-3"
-                          >
-                            <Card>
-                              <CardContent className="p-6">
-                                <h3 className="text-xl font-bold mb-4">
-                                  Skills & Technologies
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                                  {personalInfo.skills.map((skill) => (
-                                    <div
-                                      key={skill}
-                                      className="flex items-center"
-                                    >
-                                      <CheckCircle className="h-4 w-4 text-primary mr-3" />
-                                      <span className="text-sm">{skill}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              </CardContent>
-                            </Card>
-                          </motion.div>
+                {/* Programming Languages */}
+                <motion.div variants={fadeIn}>
+                  <Card className="h-full">
+                    <CardContent className="p-6 h-full flex flex-col">
+                      <h3 className="text-xl font-bold mb-4 text-blue-700 dark:text-blue-300">
+                        Programming Languages
+                      </h3>
+                      <div className="space-y-3 flex-1">
+                        {skills.languages.length > 0 ? (
+                          skills.languages.map((skill) => (
+                            <div key={skill} className="flex items-center">
+                              <CheckCircle className="h-4 w-4 text-primary mr-3" />
+                              <span className="text-sm">{skill}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-muted-foreground text-sm">
+                            No languages added yet
+                          </p>
                         )}
-                    </>
-                  );
-                })()}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Frameworks & Stack */}
+                <motion.div variants={fadeIn}>
+                  <Card className="h-full">
+                    <CardContent className="p-6 h-full flex flex-col">
+                      <h3 className="text-xl font-bold mb-4 text-green-700 dark:text-green-300">
+                        Frameworks & Stack
+                      </h3>
+                      <div className="space-y-3 flex-1">
+                        {skills.frameworksAndStack.length > 0 ? (
+                          skills.frameworksAndStack.map((skill) => (
+                            <div key={skill} className="flex items-center">
+                              <CheckCircle className="h-4 w-4 text-primary mr-3" />
+                              <span className="text-sm">{skill}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-muted-foreground text-sm">
+                            No frameworks added yet
+                          </p>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Tools & Services */}
+                <motion.div variants={fadeIn}>
+                  <Card className="h-full">
+                    <CardContent className="p-6 h-full flex flex-col">
+                      <h3 className="text-xl font-bold mb-4 text-purple-700 dark:text-purple-300">
+                        Tools & Services
+                      </h3>
+                      <div className="space-y-3 flex-1">
+                        {skills.toolsAndServices.length > 0 ? (
+                          skills.toolsAndServices.map((skill) => (
+                            <div key={skill} className="flex items-center">
+                              <CheckCircle className="h-4 w-4 text-primary mr-3" />
+                              <span className="text-sm">{skill}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-muted-foreground text-sm">
+                            No tools added yet
+                          </p>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </motion.div>
             ) : (
               <motion.div
@@ -418,9 +370,9 @@ export default function AboutPage() {
                   },
                 }}
               >
-                {/* Fallback static skills when no data is available */}
+                {/* Fallback when no skills data is available */}
                 <motion.div variants={fadeIn}>
-                  <Card>
+                  <Card className="h-full">
                     <CardContent className="p-6">
                       <h3 className="text-xl font-bold mb-4">
                         Skills & Technologies

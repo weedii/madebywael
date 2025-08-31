@@ -75,6 +75,15 @@ export interface SiteSettings {
   updatedAt: Date;
 }
 
+export interface Skills {
+  id: string;
+  languages: string[];
+  frameworksAndStack: string[];
+  toolsAndServices: string[];
+  updatedAt: Date;
+  createdAt: Date;
+}
+
 export interface User {
   id: string;
   email: string;

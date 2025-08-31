@@ -9,6 +9,7 @@ import {
   Briefcase,
   ChevronLeft,
   ChevronRight,
+  Code2,
   FileText,
   Home,
   LayoutDashboard,
@@ -51,6 +52,11 @@ const sidebarNavItems = [
     icon: <Briefcase className="h-5 w-5" />,
   },
   {
+    title: "Skills",
+    href: "/admin/skills",
+    icon: <Code2 className="h-5 w-5" />,
+  },
+  {
     title: "Settings",
     icon: <Settings className="h-5 w-5" />,
     submenu: [
@@ -89,8 +95,8 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   React.useEffect(() => {
     sidebarNavItems.forEach((item) => {
       if (item.submenu) {
-        const hasActiveSubitem = item.submenu.some((subitem) =>
-          pathname === subitem.href
+        const hasActiveSubitem = item.submenu.some(
+          (subitem) => pathname === subitem.href
         );
         if (hasActiveSubitem) {
           setOpenSubmenu(item.title);
@@ -213,9 +219,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                               key={subindex}
                               variant="ghost"
                               className={`w-full justify-start ${
-                                pathname === subitem.href
-                                  ? "bg-accent"
-                                  : ""
+                                pathname === subitem.href ? "bg-accent" : ""
                               }`}
                               asChild
                             >
