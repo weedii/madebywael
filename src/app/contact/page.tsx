@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, MapPin, Phone, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, Phone, X } from "lucide-react";
 
 import { MainLayout } from "@/components/common/main-layout";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,42 @@ const fadeIn = {
 
 export default function ContactPage() {
   const { toast } = useToast();
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [contactInfo, setContactInfo] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load user profile and contact info
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        const [usersResponse, contactResponse] = await Promise.all([
+          fetch("/api/users"),
+          fetch("/api/contact"),
+        ]);
+
+        if (usersResponse.ok) {
+          const usersData = await usersResponse.json();
+          if (usersData.length > 0) {
+            setUserProfile(usersData[0]);
+          }
+        }
+
+        if (contactResponse.ok) {
+          const contactData = await contactResponse.json();
+          if (contactData.length > 0) {
+            setContactInfo(contactData[0]);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -148,37 +184,49 @@ export default function ContactPage() {
                 </p>
 
                 <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <Mail className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <p className="font-medium">Email</p>
-                      <a
-                        href="mailto:contact@madebywael.com"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        contact@madebywael.com
-                      </a>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Phone className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <p className="font-medium">Phone</p>
-                      <a
-                        href="tel:+1234567890"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        +1 (234) 567-890
-                      </a>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <p className="font-medium">Location</p>
-                      <p className="text-muted-foreground">San Francisco, CA</p>
-                    </div>
-                  </li>
+                  {(contactInfo?.email || userProfile?.publicEmail) && (
+                    <li className="flex items-start gap-3">
+                      <Mail className="h-5 w-5 text-primary mt-0.5" />
+                      <div>
+                        <p className="font-medium">Email</p>
+                        <a
+                          href={`mailto:${
+                            contactInfo?.email || userProfile?.publicEmail
+                          }`}
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          {contactInfo?.email || userProfile?.publicEmail}
+                        </a>
+                      </div>
+                    </li>
+                  )}
+                  {(contactInfo?.phone || userProfile?.phoneNumber) && (
+                    <li className="flex items-start gap-3">
+                      <Phone className="h-5 w-5 text-primary mt-0.5" />
+                      <div>
+                        <p className="font-medium">Phone</p>
+                        <a
+                          href={`tel:${
+                            contactInfo?.phone || userProfile?.phoneNumber
+                          }`}
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          {contactInfo?.phone || userProfile?.phoneNumber}
+                        </a>
+                      </div>
+                    </li>
+                  )}
+                  {(contactInfo?.location || userProfile?.location) && (
+                    <li className="flex items-start gap-3">
+                      <MapPin className="h-5 w-5 text-primary mt-0.5" />
+                      <div>
+                        <p className="font-medium">Location</p>
+                        <p className="text-muted-foreground">
+                          {contactInfo?.location || userProfile?.location}
+                        </p>
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </motion.div>
 
@@ -194,62 +242,74 @@ export default function ContactPage() {
                 </p>
 
                 <div className="flex gap-4">
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
-                    <a
-                      href="https://github.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  {userProfile?.githubUrl && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full"
                     >
-                      <Github className="h-5 w-5" />
-                      <span className="sr-only">GitHub</span>
-                    </a>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
-                    <a
-                      href="https://linkedin.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      <a
+                        href={userProfile.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github className="h-5 w-5" />
+                        <span className="sr-only">GitHub</span>
+                      </a>
+                    </Button>
+                  )}
+                  {userProfile?.linkedinUrl && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full"
                     >
-                      <Linkedin className="h-5 w-5" />
-                      <span className="sr-only">LinkedIn</span>
-                    </a>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
-                    <a
-                      href="https://twitter.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      <a
+                        href={userProfile.linkedinUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Linkedin className="h-5 w-5" />
+                        <span className="sr-only">LinkedIn</span>
+                      </a>
+                    </Button>
+                  )}
+                  {userProfile?.xUrl && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full"
                     >
-                      <Twitter className="h-5 w-5" />
-                      <span className="sr-only">Twitter</span>
-                    </a>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
-                    <a href="mailto:contact@madebywael.com">
-                      <Mail className="h-5 w-5" />
-                      <span className="sr-only">Email</span>
-                    </a>
-                  </Button>
+                      <a
+                        href={userProfile.xUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <X className="h-5 w-5" />
+                        <span className="sr-only">X</span>
+                      </a>
+                    </Button>
+                  )}
+                  {(contactInfo?.email || userProfile?.publicEmail) && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full"
+                    >
+                      <a
+                        href={`mailto:${
+                          contactInfo?.email || userProfile?.publicEmail
+                        }`}
+                      >
+                        <Mail className="h-5 w-5" />
+                        <span className="sr-only">Email</span>
+                      </a>
+                    </Button>
+                  )}
                 </div>
               </motion.div>
 
@@ -267,18 +327,24 @@ export default function ContactPage() {
                 <ul className="space-y-2">
                   <li className="flex justify-between">
                     <span className="text-muted-foreground">
-                      Monday - Friday
+                      {contactInfo?.businessHours || "Monday - Friday"}
                     </span>
-                    <span>9:00 AM - 5:00 PM</span>
+                    <span>
+                      {contactInfo?.businessHours ? "" : "9:00 AM - 5:00 PM"}
+                    </span>
                   </li>
-                  <li className="flex justify-between">
-                    <span className="text-muted-foreground">Saturday</span>
-                    <span>By appointment</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span className="text-muted-foreground">Sunday</span>
-                    <span>Closed</span>
-                  </li>
+                  {!contactInfo?.businessHours && (
+                    <>
+                      <li className="flex justify-between">
+                        <span className="text-muted-foreground">Saturday</span>
+                        <span>By appointment</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span className="text-muted-foreground">Sunday</span>
+                        <span>Closed</span>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </motion.div>
             </div>

@@ -51,11 +51,7 @@ const sidebarNavItems = [
     href: "/admin/projects",
     icon: <Briefcase className="h-5 w-5" />,
   },
-  {
-    title: "Skills",
-    href: "/admin/skills",
-    icon: <Code2 className="h-5 w-5" />,
-  },
+
   {
     title: "Settings",
     icon: <Settings className="h-5 w-5" />,
@@ -66,19 +62,14 @@ const sidebarNavItems = [
         icon: <FileText className="h-4 w-4" />,
       },
       {
-        title: "Personal Info",
-        href: "/admin/settings/personal",
+        title: "Profile",
+        href: "/admin/settings/profile",
         icon: <User className="h-4 w-4" />,
       },
       {
-        title: "Contact Info",
-        href: "/admin/settings/contact",
-        icon: <FileText className="h-4 w-4" />,
-      },
-      {
-        title: "Social Links",
-        href: "/admin/settings/social",
-        icon: <FileText className="h-4 w-4" />,
+        title: "Skills",
+        href: "/admin/settings/skills",
+        icon: <Code2 className="h-5 w-5" />,
       },
     ],
   },
@@ -287,7 +278,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                       <DropdownMenuLabel>My Account</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
-                        <Link href="/admin/settings/personal">Profile</Link>
+                        <Link href="/admin/settings/profile">Profile</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={handleSignOut}>
                         <LogOut className="mr-2 h-4 w-4" />

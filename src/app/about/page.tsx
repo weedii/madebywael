@@ -10,7 +10,7 @@ import {
   Github,
   Linkedin,
   Mail,
-  Twitter,
+  X,
   CheckCircle,
 } from "lucide-react";
 
@@ -82,6 +82,7 @@ export default function AboutPage() {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
   const [skills, setSkills] = useState<Skills | null>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Load personal info, settings, and skills
@@ -89,12 +90,17 @@ export default function AboutPage() {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const [personalResponse, settingsResponse, skillsResponse] =
-          await Promise.all([
-            fetch("/api/personal"),
-            fetch("/api/settings"),
-            fetch("/api/skills"),
-          ]);
+        const [
+          personalResponse,
+          settingsResponse,
+          skillsResponse,
+          usersResponse,
+        ] = await Promise.all([
+          fetch("/api/personal"),
+          fetch("/api/settings"),
+          fetch("/api/skills"),
+          fetch("/api/users"),
+        ]);
 
         if (personalResponse.ok) {
           const personalData = await personalResponse.json();
@@ -114,6 +120,13 @@ export default function AboutPage() {
           const skillsData = await skillsResponse.json();
           if (skillsData.length > 0) {
             setSkills(skillsData[0]); // Get the first record
+          }
+        }
+
+        if (usersResponse.ok) {
+          const usersData = await usersResponse.json();
+          if (usersData.length > 0) {
+            setUserProfile(usersData[0]); // Get the first user (admin)
           }
         }
       } catch (error) {
@@ -407,62 +420,70 @@ export default function AboutPage() {
               to reach out!
             </p>
             <div className="flex justify-center gap-4 pt-6">
-              <Button
-                asChild
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-              >
-                <Link
-                  href="https://github.com/weedii"
-                  target="_blank"
-                  rel="noopener noreferrer"
+              {userProfile?.githubUrl && (
+                <Button
+                  asChild
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
                 >
-                  <Github className="h-5 w-5" />
-                  <span className="sr-only">GitHub</span>
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-              >
-                <Link
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  <Link
+                    href={userProfile.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Github className="h-5 w-5" />
+                    <span className="sr-only">GitHub</span>
+                  </Link>
+                </Button>
+              )}
+              {userProfile?.linkedinUrl && (
+                <Button
+                  asChild
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
                 >
-                  <Linkedin className="h-5 w-5" />
-                  <span className="sr-only">LinkedIn</span>
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-              >
-                <Link
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  <Link
+                    href={userProfile.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Linkedin className="h-5 w-5" />
+                    <span className="sr-only">LinkedIn</span>
+                  </Link>
+                </Button>
+              )}
+              {userProfile?.xUrl && (
+                <Button
+                  asChild
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
                 >
-                  <Twitter className="h-5 w-5" />
-                  <span className="sr-only">Twitter</span>
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-              >
-                <Link href="mailto:abidwael293@gmail.com">
-                  <Mail className="h-5 w-5" />
-                  <span className="sr-only">Email</span>
-                </Link>
-              </Button>
+                  <Link
+                    href={userProfile.xUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <X className="h-5 w-5" />
+                    <span className="sr-only">X</span>
+                  </Link>
+                </Button>
+              )}
+              {userProfile?.publicEmail && (
+                <Button
+                  asChild
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <Link href={`mailto:${userProfile.publicEmail}`}>
+                    <Mail className="h-5 w-5" />
+                    <span className="sr-only">Email</span>
+                  </Link>
+                </Button>
+              )}
             </div>
             <div className="pt-8">
               <Button asChild size="lg">

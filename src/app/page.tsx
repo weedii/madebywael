@@ -92,30 +92,43 @@ const staggerContainer = {
 
 export default function Home() {
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load featured projects from API
+  // Load featured projects and user profile from API
   useEffect(() => {
-    const loadFeaturedProjects = async () => {
+    const loadData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/projects");
-        if (response.ok) {
-          const data = await response.json();
+
+        const [projectsResponse, usersResponse] = await Promise.all([
+          fetch("/api/projects"),
+          fetch("/api/users"),
+        ]);
+
+        if (projectsResponse.ok) {
+          const projectsData = await projectsResponse.json();
           // Get published and featured projects, limit to 6 for homepage
-          const featured = data
+          const featured = projectsData
             .filter((project: Project) => project.published && project.featured)
             .slice(0, 6);
           setFeaturedProjects(featured);
         }
+
+        if (usersResponse.ok) {
+          const usersData = await usersResponse.json();
+          if (usersData.length > 0) {
+            setUserProfile(usersData[0]); // Get the first user (admin)
+          }
+        }
       } catch (error) {
-        console.error("Failed to load featured projects:", error);
+        console.error("Failed to load data:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadFeaturedProjects();
+    loadData();
   }, []);
 
   return (
@@ -143,7 +156,8 @@ export default function Home() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <h1 className="text-4xl font-bold tracking-tight sm:text-5xl xl:text-6xl/none text-gradient">
-                    Hi, I&apos;m Wael
+                    Hi, I&apos;m{" "}
+                    {userProfile?.fullName?.split(" ")[0] || "Wael"}
                   </h1>
                   <p className="text-3xl md:text-5xl transform hover:rotate-12 transition-transform duration-300 hover:cursor-grab">
                     👋
@@ -151,12 +165,8 @@ export default function Home() {
                 </div>
 
                 <p className="max-w-[600px] text-muted-foreground md:text-xl leading-relaxed">
-                  Software Engineer specialized in building{" "}
-                  <span className="text-primary font-medium">beautiful</span>,{" "}
-                  <span className="text-primary font-medium">accessible</span>,
-                  and{" "}
-                  <span className="text-primary font-medium">performant</span>{" "}
-                  web applications with modern technologies.
+                  {userProfile?.bio ||
+                    "Software Engineer specialized in building beautiful, accessible, and performant web applications with modern technologies."}
                 </p>
               </div>
               <div className="flex flex-col gap-3 min-[400px]:flex-row pt-4">
@@ -188,34 +198,46 @@ export default function Home() {
                 </Button>
               </div>
               <div className="flex gap-5 pt-6 items-center">
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors hover-scale"
-                >
-                  <Github className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors hover-scale"
-                >
-                  <FileText className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors hover-scale"
-                >
-                  <Code className="h-5 w-5" />
-                </a>
-                <div className="h-5 w-px bg-border mx-1"></div>
-                <span className="text-sm text-muted-foreground">
-                  Let's connect
-                </span>
+                {userProfile?.githubUrl && (
+                  <a
+                    href={userProfile.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors hover-scale"
+                  >
+                    <Github className="h-5 w-5" />
+                  </a>
+                )}
+                {userProfile?.linkedinUrl && (
+                  <a
+                    href={userProfile.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors hover-scale"
+                  >
+                    <FileText className="h-5 w-5" />
+                  </a>
+                )}
+                {userProfile?.xUrl && (
+                  <a
+                    href={userProfile.xUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors hover-scale"
+                  >
+                    <Code className="h-5 w-5" />
+                  </a>
+                )}
+                {(userProfile?.githubUrl ||
+                  userProfile?.linkedinUrl ||
+                  userProfile?.xUrl) && (
+                  <>
+                    <div className="h-5 w-px bg-border mx-1"></div>
+                    <span className="text-sm text-muted-foreground">
+                      Let's connect
+                    </span>
+                  </>
+                )}
               </div>
             </motion.div>
 
@@ -234,8 +256,8 @@ export default function Home() {
                 <div className="absolute inset-4 rounded-full bg-card border shadow-lg glass-effect"></div>
 
                 <Image
-                  src="/me.jpg"
-                  alt="Wael Profile"
+                  src={userProfile?.profilePicture || "/me.jpg"}
+                  alt={`${userProfile?.fullName || "Wael"} Profile`}
                   fill
                   className="object-cover rounded-full p-2"
                   priority
@@ -655,7 +677,7 @@ export default function Home() {
                   className="gap-2 group rounded-full"
                 >
                   <Link
-                    href="https://github.com/weedii"
+                    href={userProfile?.githubUrl || "https://github.com/weedii"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

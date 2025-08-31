@@ -49,7 +49,7 @@ const defaultData = {
     addTimestamps({
       github: "https://github.com/yourusername",
       linkedin: "https://linkedin.com/in/yourusername",
-      twitter: "https://twitter.com/yourusername",
+      x: "https://x.com/yourusername",
       instagram: "https://instagram.com/yourusername"
     })
   ],
@@ -187,8 +187,16 @@ async function createAdminUser() {
       const adminUser = addTimestamps({
         email: 'admin@madebywael.com',
         password: hashedPassword,
-        name: 'Admin User',
-        role: 'admin'
+        role: 'admin',
+        fullName: 'Wael Abidi',
+        publicEmail: 'abidiw293@gmail.com',
+        phoneNumber: '+216 54052999',
+        location: 'Tunis, Tunisia',
+        profilePicture: '/me.jpg',
+        bio: 'Full-stack developer passionate about creating beautiful and functional web applications.',
+        githubUrl: 'https://github.com/weedii',
+        linkedinUrl: 'https://linkedin.com/in/waelabidi',
+        xUrl: 'https://x.com/weedi_xD'
       });
       
       users.push(adminUser);

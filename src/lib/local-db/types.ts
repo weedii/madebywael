@@ -88,8 +88,18 @@ export interface User {
   id: string;
   email: string;
   password: string;
-  name: string;
   role: "admin";
+  // Profile information
+  fullName: string;
+  publicEmail?: string;
+  phoneNumber?: string;
+  location?: string;
+  profilePicture: string;
+  bio?: string;
+  // Social links
+  githubUrl?: string;
+  linkedinUrl?: string;
+  xUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
