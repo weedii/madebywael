@@ -46,8 +46,8 @@ export default function LoginPage() {
       }
 
       if (result?.ok) {
-        router.push("/admin");
-        router.refresh();
+        // Use window.location instead of router.push to ensure proper redirect
+        window.location.href = "/admin";
       }
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
@@ -124,7 +124,10 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col">
             <div className="text-center text-sm text-muted-foreground mt-2">
-              <Link href="/" className="underline underline-offset-4 hover:text-primary">
+              <Link
+                href="/"
+                className="underline underline-offset-4 hover:text-primary"
+              >
                 Back to website
               </Link>
             </div>
@@ -139,4 +142,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-} 
+}

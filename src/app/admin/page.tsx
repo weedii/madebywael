@@ -392,29 +392,9 @@ export default function AdminDashboard() {
                 variant="ghost"
                 className="justify-start h-auto p-3"
               >
-                <Link href="/admin/settings/personal">
+                <Link href="/admin/settings/profile">
                   <UserCircle className="h-4 w-4 mr-2" />
-                  Personal Info
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="ghost"
-                className="justify-start h-auto p-3"
-              >
-                <Link href="/admin/settings/contact">
-                  <FileText className="h-4 w-4 mr-2" />
-                  Contact Info
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="ghost"
-                className="justify-start h-auto p-3"
-              >
-                <Link href="/admin/settings/social">
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  Social Links
+                  Profile
                 </Link>
               </Button>
             </div>

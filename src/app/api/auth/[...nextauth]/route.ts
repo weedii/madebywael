@@ -100,12 +100,28 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  cookies: {
+    sessionToken: {
+      name:
+        process.env.NODE_ENV === "production"
+          ? "__Secure-next-auth.session-token"
+          : "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        console.log("JWT callback - setting token for user:", user.email);
       }
       return token;
     },
@@ -113,6 +129,10 @@ const handler = NextAuth({
       if (token) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+        console.log(
+          "Session callback - user authenticated:",
+          session.user.email
+        );
       }
       return session;
     },
@@ -121,6 +141,7 @@ const handler = NextAuth({
     signIn: "/admin/login",
     error: "/admin/login",
   },
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
 });
 
