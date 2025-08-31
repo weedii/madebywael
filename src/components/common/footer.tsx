@@ -1,11 +1,30 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Github, Linkedin, X, Mail } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const [userProfile, setUserProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const response = await fetch("/api/users");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.length > 0) {
+            setUserProfile(data[0]);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load user profile:", error);
+      }
+    };
+
+    loadUserProfile();
+  }, []);
 
   return (
     <footer className="border-t bg-background flex justify-center px-5">
@@ -14,8 +33,8 @@ export function Footer() {
           <div className="md:col-span-2">
             <h3 className="text-xl font-bold mb-4">madebywael</h3>
             <p className="text-muted-foreground max-w-md">
-              Software engineer passionate about building beautiful, accessible,
-              and performant web applications.
+              {userProfile?.bio ||
+                "Software engineer passionate about building beautiful, accessible, and performant web applications."}
             </p>
           </div>
 
@@ -68,40 +87,48 @@ export function Footer() {
           <div>
             <h3 className="font-medium mb-4">Connect</h3>
             <div className="flex gap-4">
-              <Link
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Github className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </Link>
-              <Link
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
-              </Link>
-              <Link
-                href="https://x.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="h-5 w-5" />
-                <span className="sr-only">X</span>
-              </Link>
-              <Link
-                href="mailto:contact@madebywael.com"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Mail className="h-5 w-5" />
-                <span className="sr-only">Email</span>
-              </Link>
+              {userProfile?.githubUrl && (
+                <Link
+                  href={userProfile.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Github className="h-5 w-5" />
+                  <span className="sr-only">GitHub</span>
+                </Link>
+              )}
+              {userProfile?.linkedinUrl && (
+                <Link
+                  href={userProfile.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Linkedin className="h-5 w-5" />
+                  <span className="sr-only">LinkedIn</span>
+                </Link>
+              )}
+              {userProfile?.xUrl && (
+                <Link
+                  href={userProfile.xUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                  <span className="sr-only">X</span>
+                </Link>
+              )}
+              {userProfile?.publicEmail && (
+                <Link
+                  href={`mailto:${userProfile.publicEmail}`}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Mail className="h-5 w-5" />
+                  <span className="sr-only">Email</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>

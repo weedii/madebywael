@@ -20,16 +20,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // Interfaces for the data
-interface PersonalInfo {
-  id: string;
-  name: string;
-  bio: string;
-  profilePicture: string;
-  skills: string[];
-  experience: string;
-  updatedAt: string;
-  createdAt: string;
-}
 
 interface Skills {
   id: string;
@@ -79,35 +69,22 @@ const fadeInRight = {
 };
 
 export default function AboutPage() {
-  const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
   const [skills, setSkills] = useState<Skills | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load personal info, settings, and skills
+  // Load settings, skills, and user profile
   useEffect(() => {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const [
-          personalResponse,
-          settingsResponse,
-          skillsResponse,
-          usersResponse,
-        ] = await Promise.all([
-          fetch("/api/personal"),
-          fetch("/api/settings"),
-          fetch("/api/skills"),
-          fetch("/api/users"),
-        ]);
-
-        if (personalResponse.ok) {
-          const personalData = await personalResponse.json();
-          if (personalData.length > 0) {
-            setPersonalInfo(personalData[0]); // Get the first record
-          }
-        }
+        const [settingsResponse, skillsResponse, usersResponse] =
+          await Promise.all([
+            fetch("/api/settings"),
+            fetch("/api/skills"),
+            fetch("/api/users"),
+          ]);
 
         if (settingsResponse.ok) {
           const settingsData = await settingsResponse.json();
@@ -142,7 +119,7 @@ export default function AboutPage() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading...</p>
@@ -166,10 +143,10 @@ export default function AboutPage() {
             >
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  About {personalInfo?.name || "Wael Abidi"}
+                  About {userProfile?.fullName || "Wael Abidi"}
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  {personalInfo?.bio ||
+                  {userProfile?.bio ||
                     "Full-stack Developer passionate about building scalable web applications with modern technologies and delivering exceptional user experiences."}
                 </p>
               </div>
@@ -178,11 +155,7 @@ export default function AboutPage() {
                   <p className="leading-relaxed">{settings.aboutPageContent}</p>
                 )}
 
-                {personalInfo?.experience && (
-                  <p className="leading-relaxed">{personalInfo.experience}</p>
-                )}
-
-                {!settings?.aboutPageContent && !personalInfo?.experience && (
+                {!settings?.aboutPageContent && (
                   <>
                     <p className="leading-relaxed">
                       I'm a dedicated full-stack developer with professional
@@ -200,29 +173,33 @@ export default function AboutPage() {
                   </>
                 )}
 
-                {personalInfo?.skills && personalInfo.skills.length > 0 && (
-                  <div className="pt-4">
-                    <h3 className="text-lg font-semibold mb-3">
-                      Core Technologies
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {personalInfo.skills.slice(0, 8).map((skill) => (
-                        <Badge
-                          key={skill}
-                          variant="secondary"
-                          className="text-sm"
-                        >
-                          {skill}
-                        </Badge>
-                      ))}
-                      {personalInfo.skills.length > 8 && (
+                {skills &&
+                  (skills.languages.length > 0 ||
+                    skills.frameworksAndStack.length > 0 ||
+                    skills.toolsAndServices.length > 0) && (
+                    <div className="pt-4">
+                      <h3 className="text-lg font-semibold mb-3">
+                        Core Technologies
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          ...skills.languages.slice(0, 4),
+                          ...skills.frameworksAndStack.slice(0, 4),
+                        ].map((skill) => (
+                          <Badge
+                            key={skill}
+                            variant="secondary"
+                            className="text-sm"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
                         <Badge variant="outline" className="text-sm">
-                          +{personalInfo.skills.length - 8} more
+                          +more
                         </Badge>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
               <div className="flex gap-4 pt-4">
                 <Button asChild>

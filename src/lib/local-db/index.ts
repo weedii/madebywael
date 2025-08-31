@@ -250,11 +250,7 @@ export * from "./types";
 // Database instances for each collection
 export const blogDB = new LocalDB<import("./types").BlogPost>("blogs");
 export const projectDB = new LocalDB<import("./types").Project>("projects");
-export const contactDB = new LocalDB<import("./types").ContactInfo>("contact");
-export const personalDB = new LocalDB<import("./types").PersonalInfo>(
-  "personal"
-);
-export const socialDB = new LocalDB<import("./types").SocialLinks>("social");
+
 export const settingsDB = new LocalDB<import("./types").SiteSettings>(
   "settings"
 );

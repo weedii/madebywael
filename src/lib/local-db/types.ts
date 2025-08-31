@@ -32,34 +32,6 @@ export interface Project {
   createdAt: Date;
 }
 
-export interface ContactInfo {
-  id: string;
-  email: string;
-  phone?: string;
-  location?: string;
-  businessHours?: string;
-  updatedAt: Date;
-}
-
-export interface PersonalInfo {
-  id: string;
-  name: string;
-  bio: string;
-  profilePicture?: string;
-  skills: string[];
-  experience: string;
-  updatedAt: Date;
-}
-
-export interface SocialLinks {
-  id: string;
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
-  instagram?: string;
-  updatedAt: Date;
-}
-
 export interface SiteSettings {
   id: string;
   title: string;

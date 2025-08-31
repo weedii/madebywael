@@ -31,30 +31,19 @@ const fadeIn = {
 export default function ContactPage() {
   const { toast } = useToast();
   const [userProfile, setUserProfile] = useState<any>(null);
-  const [contactInfo, setContactInfo] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user profile and contact info
+  // Load user profile
   useEffect(() => {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const [usersResponse, contactResponse] = await Promise.all([
-          fetch("/api/users"),
-          fetch("/api/contact"),
-        ]);
+        const usersResponse = await fetch("/api/users");
 
         if (usersResponse.ok) {
           const usersData = await usersResponse.json();
           if (usersData.length > 0) {
             setUserProfile(usersData[0]);
-          }
-        }
-
-        if (contactResponse.ok) {
-          const contactData = await contactResponse.json();
-          if (contactData.length > 0) {
-            setContactInfo(contactData[0]);
           }
         }
       } catch (error) {
@@ -184,45 +173,41 @@ export default function ContactPage() {
                 </p>
 
                 <ul className="space-y-4">
-                  {(contactInfo?.email || userProfile?.publicEmail) && (
+                  {userProfile?.publicEmail && (
                     <li className="flex items-start gap-3">
                       <Mail className="h-5 w-5 text-primary mt-0.5" />
                       <div>
                         <p className="font-medium">Email</p>
                         <a
-                          href={`mailto:${
-                            contactInfo?.email || userProfile?.publicEmail
-                          }`}
+                          href={`mailto:${userProfile.publicEmail}`}
                           className="text-muted-foreground hover:text-primary transition-colors"
                         >
-                          {contactInfo?.email || userProfile?.publicEmail}
+                          {userProfile.publicEmail}
                         </a>
                       </div>
                     </li>
                   )}
-                  {(contactInfo?.phone || userProfile?.phoneNumber) && (
+                  {userProfile?.phoneNumber && (
                     <li className="flex items-start gap-3">
                       <Phone className="h-5 w-5 text-primary mt-0.5" />
                       <div>
                         <p className="font-medium">Phone</p>
                         <a
-                          href={`tel:${
-                            contactInfo?.phone || userProfile?.phoneNumber
-                          }`}
+                          href={`tel:${userProfile.phoneNumber}`}
                           className="text-muted-foreground hover:text-primary transition-colors"
                         >
-                          {contactInfo?.phone || userProfile?.phoneNumber}
+                          {userProfile.phoneNumber}
                         </a>
                       </div>
                     </li>
                   )}
-                  {(contactInfo?.location || userProfile?.location) && (
+                  {userProfile?.location && (
                     <li className="flex items-start gap-3">
                       <MapPin className="h-5 w-5 text-primary mt-0.5" />
                       <div>
                         <p className="font-medium">Location</p>
                         <p className="text-muted-foreground">
-                          {contactInfo?.location || userProfile?.location}
+                          {userProfile.location}
                         </p>
                       </div>
                     </li>
@@ -238,7 +223,7 @@ export default function ContactPage() {
               >
                 <h2 className="text-2xl font-bold">Connect Online</h2>
                 <p className="text-muted-foreground">
-                  Connect with me on social media platforms:
+                  Connect with me on the following platforms
                 </p>
 
                 <div className="flex gap-4">
@@ -293,59 +278,20 @@ export default function ContactPage() {
                       </a>
                     </Button>
                   )}
-                  {(contactInfo?.email || userProfile?.publicEmail) && (
+                  {userProfile?.publicEmail && (
                     <Button
                       asChild
                       variant="outline"
                       size="icon"
                       className="rounded-full"
                     >
-                      <a
-                        href={`mailto:${
-                          contactInfo?.email || userProfile?.publicEmail
-                        }`}
-                      >
+                      <a href={`mailto:${userProfile.publicEmail}`}>
                         <Mail className="h-5 w-5" />
                         <span className="sr-only">Email</span>
                       </a>
                     </Button>
                   )}
                 </div>
-              </motion.div>
-
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-                className="space-y-4"
-              >
-                <h2 className="text-2xl font-bold">Business Hours</h2>
-                <p className="text-muted-foreground">
-                  Available during the following hours:
-                </p>
-
-                <ul className="space-y-2">
-                  <li className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {contactInfo?.businessHours || "Monday - Friday"}
-                    </span>
-                    <span>
-                      {contactInfo?.businessHours ? "" : "9:00 AM - 5:00 PM"}
-                    </span>
-                  </li>
-                  {!contactInfo?.businessHours && (
-                    <>
-                      <li className="flex justify-between">
-                        <span className="text-muted-foreground">Saturday</span>
-                        <span>By appointment</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-muted-foreground">Sunday</span>
-                        <span>Closed</span>
-                      </li>
-                    </>
-                  )}
-                </ul>
               </motion.div>
             </div>
           </div>

@@ -23,37 +23,6 @@ function addTimestamps(entity) {
 
 // Default data for each collection
 const defaultData = {
-  contact: [
-    addTimestamps({
-      email: "contact@madebywael.com",
-      phone: "+1 (555) 123-4567",
-      location: "Your City, Country",
-      businessHours: "Monday - Friday, 9 AM - 6 PM EST",
-    })
-  ],
-  
-  personal: [
-    addTimestamps({
-      name: "Wael",
-      bio: "Full-stack developer passionate about creating beautiful and functional web applications. I love working with modern technologies and solving complex problems.",
-      profilePicture: "/images/profile.jpg",
-      skills: [
-        "JavaScript", "TypeScript", "React", "Next.js", "Node.js", 
-        "Python", "MongoDB", "PostgreSQL", "Tailwind CSS", "Git"
-      ],
-      experience: "5+ years of experience in web development, specializing in React and Node.js applications."
-    })
-  ],
-  
-  social: [
-    addTimestamps({
-      github: "https://github.com/yourusername",
-      linkedin: "https://linkedin.com/in/yourusername",
-      x: "https://x.com/yourusername",
-      instagram: "https://instagram.com/yourusername"
-    })
-  ],
-  
   settings: [
     addTimestamps({
       title: "Made by Wael - Portfolio",
@@ -82,19 +51,17 @@ const defaultData = {
     })
   ],
   
-  skills: [
-    addTimestamps({
-      languages: [
-        "JavaScript", "TypeScript", "Python", "Java", "Go"
-      ],
-      frameworksAndStack: [
-        "React", "Next.js", "Node.js", "Spring Boot", "FastAPI", "Express.js"
-      ],
-      toolsAndServices: [
-        "Docker", "Git/GitHub", "AWS", "MongoDB", "PostgreSQL", "Redis"
-      ]
-    })
-  ],
+  skills: addTimestamps({
+    languages: [
+      "JavaScript", "TypeScript", "Python", "Java", "Go"
+    ],
+    frameworksAndStack: [
+      "React", "Next.js", "Node.js", "Spring Boot", "FastAPI", "Express.js"
+    ],
+    toolsAndServices: [
+      "Docker", "Git/GitHub", "AWS", "MongoDB", "PostgreSQL", "Redis"
+    ]
+  }),
   
   projects: [
     addTimestamps({
@@ -140,7 +107,13 @@ async function initializeDataFiles() {
         const stats = await fs.stat(filePath);
         const existingData = JSON.parse(await fs.readFile(filePath, 'utf8'));
         
-        if (Array.isArray(existingData) && existingData.length > 0) {
+        if (collection === 'skills') {
+          // Skills is a single object, check if it has any data
+          if (existingData && Object.keys(existingData).length > 0) {
+            console.log(`⏭️  Skipping ${collection}.json (already has data)`);
+            continue;
+          }
+        } else if (Array.isArray(existingData) && existingData.length > 0) {
           console.log(`⏭️  Skipping ${collection}.json (already has data)`);
           continue;
         }
@@ -149,7 +122,8 @@ async function initializeDataFiles() {
       }
       
       await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-      console.log(`✅ Initialized ${collection}.json with ${data.length} records`);
+      const recordCount = collection === 'skills' ? '1 object' : `${data.length} records`;
+      console.log(`✅ Initialized ${collection}.json with ${recordCount}`);
     }
     
     console.log('🎉 Local database initialization complete!');
