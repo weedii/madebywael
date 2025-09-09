@@ -18,6 +18,7 @@ import { MainLayout } from "@/components/common/main-layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { DownloadResumeButton } from "@/components/common/download-resume-button";
 
 // Interfaces for the data
 
@@ -208,12 +209,8 @@ export default function AboutPage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button variant="outline" asChild>
-                  <a href={settings?.resumeFile || "/wael_abidi.pdf"} download>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download Resume
-                  </a>
-                </Button>
+
+                <DownloadResumeButton />
               </div>
             </motion.div>
             <motion.div

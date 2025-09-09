@@ -11,11 +11,13 @@ import {
   Github,
   Star,
   ExternalLink,
+  Download,
 } from "lucide-react";
 
 import { MainLayout } from "@/components/common/main-layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DownloadResumeButton } from "@/components/common/download-resume-button";
 import {
   Card,
   CardContent,
@@ -149,10 +151,11 @@ export default function Home() {
               animate="visible"
               variants={fadeIn}
             >
-              <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary mb-2 w-fit glass-effect">
+              <div className="items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary mb-2 w-fit glass-effect hidden md:flex">
                 <span className="animate-pulse mr-1.5 h-2 w-2 rounded-full bg-primary"></span>{" "}
                 Available for new projects
               </div>
+
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <h1 className="text-4xl font-bold tracking-tight sm:text-5xl xl:text-6xl/none text-gradient">
@@ -169,33 +172,16 @@ export default function Home() {
                     "Software Engineer specialized in building beautiful, accessible, and performant web applications with modern technologies."}
                 </p>
               </div>
+
               <div className="flex flex-col gap-3 min-[400px]:flex-row pt-4">
                 <Button asChild size="lg" className="gap-2 group rounded-full">
-                  <Link href="/projects">
-                    View My Work
+                  <Link href="/about">
+                    About Me
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  className="group rounded-full"
-                >
-                  <Link href="/contact" className="gap-2">
-                    Contact Me
-                    <motion.span
-                      animate={{ x: [0, 3, 0] }}
-                      transition={{
-                        repeat: Infinity,
-                        repeatDelay: 2,
-                        duration: 0.4,
-                      }}
-                    >
-                      <Github className="h-4 w-4" />
-                    </motion.span>
-                  </Link>
-                </Button>
+
+                <DownloadResumeButton />
               </div>
               <div className="flex gap-5 pt-6 items-center">
                 {userProfile?.githubUrl && (
@@ -524,7 +510,8 @@ export default function Home() {
                 Featured projects will appear here once they are published and
                 marked as featured.
               </p>
-              <Button asChild variant="outline">
+
+              <Button asChild variant="link">
                 <Link href="/projects">View All Projects</Link>
               </Button>
             </div>
@@ -685,6 +672,7 @@ export default function Home() {
                     GitHub Profile
                   </Link>
                 </Button>
+                <DownloadResumeButton />
               </div>
             </div>
           </motion.div>
