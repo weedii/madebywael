@@ -20,6 +20,13 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Made by Wael | Software Engineer",
   description: "Personal website and portfolio of Wael, a software engineer",
+  icons: {
+    icon: [
+      { url: "/wa.ico", sizes: "any" },
+      { url: "/wa.png", type: "image/png" },
+    ],
+    apple: [{ url: "/wa.png", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
