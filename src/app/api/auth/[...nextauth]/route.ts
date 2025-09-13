@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { userDB } from "@/lib/local-db";
+import { userDB } from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 
 if (!process.env.NEXTAUTH_SECRET) {

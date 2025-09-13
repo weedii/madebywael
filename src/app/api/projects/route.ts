@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { projectDB } from "@/lib/local-db";
+import { projectDB } from "@/lib/mongodb";
 
 // GET /api/projects - Get all projects
 export async function GET() {

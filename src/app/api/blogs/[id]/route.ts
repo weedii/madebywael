@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { blogDB } from "@/lib/local-db";
+import { blogDB } from "@/lib/mongodb";
 
 // GET /api/blogs/[id] - Get single blog
 export async function GET(

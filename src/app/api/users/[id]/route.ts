@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { userDB } from "@/lib/local-db";
+import { userDB } from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 
 // GET /api/users/[id] - Get single user

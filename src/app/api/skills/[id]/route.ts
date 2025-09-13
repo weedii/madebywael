@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { skillsDB } from "@/lib/local-db";
+import { skillsDB } from "@/lib/mongodb";
 
 // GET /api/skills/[id] - Get single skills
 export async function GET(

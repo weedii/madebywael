@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { settingsDB } from "@/lib/local-db";
+import { settingsDB } from "@/lib/mongodb";
 
 // GET /api/settings/[id] - Get single settings
 export async function GET(
