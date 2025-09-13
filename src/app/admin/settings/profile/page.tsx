@@ -68,10 +68,15 @@ export default function AdminProfilePage() {
       if (!response.ok) throw new Error("Failed to load users");
 
       const users = await response.json();
+      console.log("Fetched users:", users);
+      console.log("Current session email:", session?.user?.email);
+      
       // Find current user by email
       const currentUser = users.find(
         (user: any) => user.email === session?.user?.email
       );
+
+      console.log("Found current user:", currentUser);
 
       if (currentUser) {
         setProfile(currentUser);
@@ -86,8 +91,16 @@ export default function AdminProfilePage() {
           linkedinUrl: currentUser.linkedinUrl || "",
           xUrl: currentUser.xUrl || "",
         });
+      } else {
+        console.log("No user found matching session email");
+        toast({
+          title: "Warning",
+          description: "User profile not found. Please ensure you have run the database initialization.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
+      console.error("Profile loading error:", error);
       toast({
         title: "Error",
         description: "Failed to load profile",
@@ -184,8 +197,10 @@ export default function AdminProfilePage() {
                     <Image
                       src={formData.profilePicture}
                       alt="Profile Picture"
-                      fill
                       className="object-cover"
+                      priority
+                      width={128}
+                      height={128}
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full">

@@ -14,9 +14,13 @@ export async function GET(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Remove password from response
-    const { password, ...safeUser } = user;
-    return NextResponse.json(safeUser);
+    // Remove password from response and convert _id to id
+    const userObj = user.toObject ? user.toObject() : user;
+    const { password, _id, ...safeUser } = userObj;
+    return NextResponse.json({
+      id: _id.toString(),
+      ...safeUser
+    });
   } catch (error) {
     console.error("Error fetching user:", error);
     return NextResponse.json(
@@ -45,9 +49,13 @@ export async function PUT(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Remove password from response
-    const { password, ...safeUser } = user;
-    return NextResponse.json(safeUser);
+    // Remove password from response and convert _id to id
+    const userObj = user.toObject ? user.toObject() : user;
+    const { password, _id, ...safeUser } = userObj;
+    return NextResponse.json({
+      id: _id.toString(),
+      ...safeUser
+    });
   } catch (error) {
     console.error("Error updating user:", error);
     return NextResponse.json(

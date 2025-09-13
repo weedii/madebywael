@@ -6,8 +6,15 @@ import bcrypt from "bcryptjs";
 export async function GET() {
   try {
     const users = await userDB.findAll();
-    // Remove password from response
-    const safeUsers = users.map(({ password, ...user }) => user);
+    // Convert Mongoose documents to plain objects and remove password
+    const safeUsers = users.map((user) => {
+      const userObj = user.toObject ? user.toObject() : user;
+      const { password, _id, ...safeUser } = userObj;
+      return {
+        id: _id.toString(),
+        ...safeUser
+      };
+    });
     return NextResponse.json(safeUsers);
   } catch (error) {
     console.error("Error fetching users:", error);
