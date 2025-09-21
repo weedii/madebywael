@@ -26,6 +26,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import RobotSpline from "@/components/3D/RobotSpline";
 
 interface Project {
   id: string;
@@ -227,7 +228,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
               className="flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -279,7 +280,9 @@ export default function Home() {
                   <span className="text-2xl">🚀</span>
                 </motion.div>
               </div>
-            </motion.div>
+            </motion.div> */}
+
+            <RobotSpline />
           </div>
         </div>
       </section>
