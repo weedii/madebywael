@@ -26,7 +26,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import RobotSpline from "@/components/3D/RobotSpline";
 
 interface Project {
   id: string;
@@ -282,7 +281,7 @@ export default function Home() {
               </div>
             </motion.div> */}
 
-            <RobotSpline />
+            {/* <RobotSpline /> */}
           </div>
         </div>
       </section>
