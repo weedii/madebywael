@@ -183,7 +183,7 @@ export default function ProjectDetailsPage() {
       <section className="py-6  w-full lg:w-[85vw]">
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={slideIn}>
-            <Button variant="ghost" asChild className="mb-6 flex items-center justify-start">
+            <Button variant="ghost" asChild className="mb-6 flex items-center justify-start w-fit">
               <Link href="/projects">
                 <ArrowLeft className="mt-1 h-4 w-4" />
                 Back to Projects
