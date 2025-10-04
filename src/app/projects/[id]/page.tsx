@@ -178,10 +178,10 @@ export default function ProjectDetailsPage() {
     : project.images;
 
   return (
-    <MainLayout>
+    <MainLayout className="flex flex-col items-center justify-center gap-10">
       {/* Back Navigation */}
-      <section className="py-6">
-        <div className="container px-4 md:px-6">
+      <section className="py-6 w-[85vw]">
+        <div className="container">
           <motion.div initial="hidden" animate="visible" variants={slideIn}>
             <Button variant="ghost" asChild className="mb-6">
               <Link href="/projects">
@@ -194,10 +194,10 @@ export default function ProjectDetailsPage() {
       </section>
 
       {/* Project Header */}
-      <section className="py-8">
-        <div className="container px-4 md:px-6">
+      <section className="w-[70vw]">
+        <div className="container">
           <motion.div
-            className="mx-auto max-w-4xl"
+            className="w-full h-full"
             initial="hidden"
             animate="visible"
             variants={fadeIn}
@@ -208,9 +208,6 @@ export default function ProjectDetailsPage() {
                   <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                     {project.title}
                   </h1>
-                  {project.featured && (
-                    <Badge className="text-xs">Featured</Badge>
-                  )}
                 </div>
 
                 <div className="flex gap-3">
@@ -244,28 +241,6 @@ export default function ProjectDetailsPage() {
               <p className="text-xl text-muted-foreground max-w-3xl">
                 {project.description}
               </p>
-
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  {project.publishedAt
-                    ? new Date(project.publishedAt).toLocaleDateString()
-                    : new Date(project.createdAt).toLocaleDateString()}
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  Last updated{" "}
-                  {new Date(project.updatedAt).toLocaleDateString()}
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <Badge key={tech} variant="secondary">
-                    {tech}
-                  </Badge>
-                ))}
-              </div>
             </div>
           </motion.div>
         </div>
@@ -273,10 +248,10 @@ export default function ProjectDetailsPage() {
 
       {/* Project Images */}
       {displayImages.length > 0 && (
-        <section className="py-8">
-          <div className="container px-4 md:px-6">
+        <section className="w-[70vw] flex items-center justify-center">
+          <div className="container">
             <motion.div
-              className="mx-auto max-w-4xl"
+              className="w-full h-full"
               initial="hidden"
               animate="visible"
               variants={fadeIn}
@@ -318,23 +293,25 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* Project Content */}
-      <section className="py-8">
-        <div className="container px-4 md:px-6">
+      <section className="w-[70vw] mb-20">
+        <div className="container">
           <motion.div
-            className="mx-auto max-w-4xl"
+            className="w-full h-full"
             initial="hidden"
             animate="visible"
             variants={fadeIn}
             transition={{ delay: 0.3 }}
           >
-            <Card>
+            <Card className="border-primary/20">
               <CardHeader>
                 <CardTitle>About This Project</CardTitle>
+
                 <CardDescription>
                   Detailed information about the development process and
                   features
                 </CardDescription>
               </CardHeader>
+
               <CardContent className="prose prose-neutral dark:prose-invert max-w-none">
                 <div
                   className="whitespace-pre-wrap"
@@ -342,28 +319,6 @@ export default function ProjectDetailsPage() {
                 />
               </CardContent>
             </Card>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Navigation Footer */}
-      <section className="py-8">
-        <div className="container px-4 md:px-6">
-          <motion.div
-            className="mx-auto max-w-4xl"
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            transition={{ delay: 0.4 }}
-          >
-            <div className="flex justify-center">
-              <Button asChild variant="outline">
-                <Link href="/projects">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  View All Projects
-                </Link>
-              </Button>
-            </div>
           </motion.div>
         </div>
       </section>

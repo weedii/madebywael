@@ -17,6 +17,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const routes = [
   { name: "Home", path: "/" },
@@ -40,23 +41,36 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className={`sticky top-0 z-50 w-full border-b transition-all duration-300 flex justify-center ${
-      scrolled ? "bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 shadow-sm" : "bg-background/50 backdrop-blur-sm"
-    }`}>
+    <header
+      className={`sticky top-0 z-50 w-full border-b transition-all duration-300 flex justify-center ${
+        scrolled
+          ? "bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 shadow-sm"
+          : "bg-background/50 backdrop-blur-sm"
+      }`}
+    >
       <div className="container flex h-16 items-center justify-between mx-5 max-w-7xl">
-        <motion.div 
+        <motion.div
           className="flex items-center gap-2"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link href="/" className="flex items-center group">
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70 group-hover:scale-105 transition-transform duration-300">madebywael</span>
+          <Link href="/" className="flex items-center justify-center group">
+            <Image
+              src="/wa.png"
+              alt="Logo"
+              width={40}
+              height={40}
+              className="mt-1 group-hover:scale-110 transition-transform duration-300"
+            />
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-green-600 group-hover:scale-105 transition-transform duration-300">
+              madebywael
+            </span>
           </Link>
         </motion.div>
 
         {/* Desktop Navigation */}
-        <motion.nav 
+        <motion.nav
           className="hidden md:flex items-center gap-6"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -68,7 +82,11 @@ export function Navbar() {
                 <NavigationMenuItem key={route.path}>
                   <Link href={route.path} legacyBehavior passHref>
                     <NavigationMenuLink
-                      className={`${navigationMenuTriggerStyle()} ${pathname === route.path ? 'text-primary font-medium bg-primary/10' : ''} rounded-full`}
+                      className={`${navigationMenuTriggerStyle()} ${
+                        pathname === route.path
+                          ? "text-primary font-medium bg-primary/10"
+                          : ""
+                      } rounded-full`}
                       active={pathname === route.path}
                     >
                       {route.name}
@@ -102,7 +120,7 @@ export function Navbar() {
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
-        <motion.div 
+        <motion.div
           className="md:hidden fixed inset-0 top-16 z-40"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -128,8 +146,8 @@ export function Navbar() {
                     <Link
                       href={route.path}
                       className={`group flex items-center justify-between px-6 py-4 text-lg font-medium rounded-xl transition-all duration-200 ${
-                        pathname === route.path 
-                          ? "bg-primary/10 text-primary border border-primary/20" 
+                        pathname === route.path
+                          ? "bg-primary/10 text-primary border border-primary/20"
                           : "hover:bg-accent/50 hover:translate-x-2"
                       }`}
                       onClick={() => setIsMenuOpen(false)}
@@ -153,9 +171,9 @@ export function Navbar() {
                 ))}
               </nav>
             </div>
-            
+
             {/* Footer section */}
-            <motion.div 
+            <motion.div
               className="border-t border-primary/20 bg-gray-200 dark:bg-zinc-950 px-6 py-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
