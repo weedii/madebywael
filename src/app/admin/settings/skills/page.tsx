@@ -26,7 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
 interface Skills {
-  id: string;
+  _id: string;
   languages: string[];
   frameworksAndStack: string[];
   toolsAndServices: string[];

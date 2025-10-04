@@ -36,7 +36,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
 interface BlogPost {
-  id: string;
+  _id: string;
   title: string;
   slug: string;
   content: string;
@@ -51,7 +51,7 @@ interface BlogPost {
 
 type BlogFormData = Omit<
   BlogPost,
-  "id" | "updatedAt" | "createdAt" | "publishedAt"
+  "_id" | "updatedAt" | "createdAt" | "publishedAt"
 >;
 
 export default function AdminBlogsPage() {
@@ -196,7 +196,7 @@ export default function AdminBlogsPage() {
 
     setIsSubmitting(true);
     try {
-      const url = editingBlog ? `/api/blogs/${editingBlog.id}` : "/api/blogs";
+      const url = editingBlog ? `/api/blogs/${editingBlog._id}` : "/api/blogs";
       const method = editingBlog ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -231,7 +231,7 @@ export default function AdminBlogsPage() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/blogs/${blogToDelete.id}`, {
+      const response = await fetch(`/api/blogs/${blogToDelete._id}`, {
         method: "DELETE",
       });
 
@@ -345,7 +345,7 @@ export default function AdminBlogsPage() {
                   </TableHeader>
                   <TableBody>
                     {filteredBlogs.map((blog) => (
-                      <TableRow key={blog.id}>
+                      <TableRow key={blog._id}>
                         <TableCell>
                           <div>
                             <div className="font-medium">{blog.title}</div>

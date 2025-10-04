@@ -23,7 +23,7 @@ import { DownloadResumeButton } from "@/components/common/download-resume-button
 // Interfaces for the data
 
 interface Skills {
-  id: string;
+  _id: string;
   languages: string[];
   frameworksAndStack: string[];
   toolsAndServices: string[];
@@ -32,7 +32,7 @@ interface Skills {
 }
 
 interface Settings {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   aboutPageContent: string;

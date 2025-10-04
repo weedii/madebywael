@@ -68,7 +68,7 @@ const handler = NextAuth({
 
           console.log("✅ Local file user login successful:", user.email);
           return {
-            id: user.id,
+            id: user._id.toString(),
             email: user.email,
             name: user.fullName,
             role: user.role,

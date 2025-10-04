@@ -208,7 +208,7 @@ await blogDB.delete("some-id");
 1. **Set Environment Variables in Vercel:**
    - Go to your Vercel project dashboard
    - Navigate to Settings → Environment Variables
-   - Add all the environment variables from your `.env.local`
+   - Add all the environment variables from your `.env`
 
 2. **MongoDB Atlas Configuration:**
    - Ensure your MongoDB Atlas cluster allows connections from `0.0.0.0/0` (all IPs) for Vercel

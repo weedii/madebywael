@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 interface UserProfile {
-  id: string;
+  _id: string;
   email: string;
   role: string;
   fullName: string;
@@ -38,7 +38,7 @@ interface UserProfile {
 
 type ProfileFormData = Omit<
   UserProfile,
-  "id" | "email" | "role" | "updatedAt" | "createdAt"
+  "_id" | "email" | "role" | "updatedAt" | "createdAt"
 >;
 
 export default function AdminProfilePage() {
@@ -128,7 +128,7 @@ export default function AdminProfilePage() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/users/${profile.id}`, {
+      const response = await fetch(`/api/users/${profile._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

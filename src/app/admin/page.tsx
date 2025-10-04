@@ -270,7 +270,7 @@ export default function AdminDashboard() {
                 <div className="space-y-3">
                   {recentBlogs.map((blog: any) => (
                     <div
-                      key={blog.id}
+                      key={blog._id}
                       className="flex items-start justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
                     >
                       <div className="flex-1 min-w-0">
@@ -324,7 +324,7 @@ export default function AdminDashboard() {
                 <div className="space-y-3">
                   {recentProjects.map((project: any) => (
                     <div
-                      key={project.id}
+                      key={project._id}
                       className="flex items-start justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
                     >
                       <div className="flex-1 min-w-0">

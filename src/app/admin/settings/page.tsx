@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 interface SiteSettings {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   favicon?: string;
@@ -32,7 +32,7 @@ interface SiteSettings {
   updatedAt: Date;
 }
 
-type SiteSettingsFormData = Omit<SiteSettings, "id" | "updatedAt">;
+type SiteSettingsFormData = Omit<SiteSettings, "_id" | "updatedAt">;
 
 export default function SiteSettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -127,7 +127,7 @@ export default function SiteSettingsPage() {
 
     setIsSubmitting(true);
     try {
-      const url = settings ? `/api/settings/${settings.id}` : "/api/settings";
+      const url = settings ? `/api/settings/${settings._id}` : "/api/settings";
       const method = settings ? "PUT" : "POST";
 
       const response = await fetch(url, {

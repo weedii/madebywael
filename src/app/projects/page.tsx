@@ -20,7 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 interface Project {
-  id: string;
+  _id: string;
   title: string;
   slug: string;
   description: string;
@@ -200,14 +200,14 @@ export default function ProjectsPage() {
             {filteredProjects.length > 0 ? (
               filteredProjects.map((project) => (
                 <motion.div
-                  key={project.id}
+                  key={project._id}
                   variants={fadeIn}
                   whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                   className="relative"
                 >
                   <div
                     className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/30 to-primary/10 blur-md animate-float"
-                    style={{ animationDelay: `${parseInt(project.id) * 0.2}s` }}
+                    style={{ animationDelay: `${parseInt(project._id) * 0.2}s` }}
                   ></div>
 
                   <Card className="overflow-hidden h-full flex flex-col border-none relative">
@@ -260,7 +260,7 @@ export default function ProjectsPage() {
                     </CardContent>
                     <CardFooter>
                       <Button asChild variant="ghost" className="w-full">
-                        <Link href={`/projects/${project.id}`}>
+                        <Link href={`/projects/${project._id}`}>
                           View Details
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>

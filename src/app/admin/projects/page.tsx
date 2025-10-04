@@ -35,7 +35,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 
 interface Project {
-  id: string;
+  _id: string;
   title: string;
   slug: string;
   description: string;
@@ -54,7 +54,7 @@ interface Project {
 
 type ProjectFormData = Omit<
   Project,
-  "id" | "updatedAt" | "createdAt" | "publishedAt"
+  "_id" | "updatedAt" | "createdAt" | "publishedAt"
 >;
 
 export default function AdminProjectsPage() {
@@ -193,7 +193,7 @@ export default function AdminProjectsPage() {
     setIsSubmitting(true);
     try {
       const url = editingProject
-        ? `/api/projects/${editingProject.id}`
+        ? `/api/projects/${editingProject._id}`
         : "/api/projects";
       const method = editingProject ? "PUT" : "POST";
 
@@ -233,7 +233,7 @@ export default function AdminProjectsPage() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/projects/${projectToDelete.id}`, {
+      const response = await fetch(`/api/projects/${projectToDelete._id}`, {
         method: "DELETE",
       });
 
@@ -345,7 +345,7 @@ export default function AdminProjectsPage() {
                   </TableHeader>
                   <TableBody>
                     {filteredProjects.map((project) => (
-                      <TableRow key={project.id}>
+                      <TableRow key={project._id}>
                         <TableCell>
                           <div>
                             <div className="font-medium">{project.title}</div>

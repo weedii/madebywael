@@ -22,12 +22,20 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 interface Project {
-  id: string;
+  _id: string;
   title: string;
   slug: string;
   description: string;
@@ -277,52 +285,30 @@ export default function ProjectDetailsPage() {
               <Card>
                 <CardContent className="p-0">
                   <div className="relative">
-                    <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg">
-                      <Image
-                        src={displayImages[currentImageIndex]}
-                        alt={`${project.title} - Image ${
-                          currentImageIndex + 1
-                        }`}
-                        fill
-                        className="object-cover"
-                        priority
-                      />
-                    </div>
-
-                    {displayImages.length > 1 && (
-                      <>
-                        <Button
-                          variant="secondary"
-                          size="icon"
-                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background"
-                          onClick={prevImage}
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          size="icon"
-                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background"
-                          onClick={nextImage}
-                        >
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                          {displayImages.map((_, index) => (
-                            <button
-                              key={index}
-                              className={`w-2 h-2 rounded-full transition-colors ${
-                                index === currentImageIndex
-                                  ? "bg-primary"
-                                  : "bg-background/50"
-                              }`}
-                              onClick={() => setCurrentImageIndex(index)}
-                            />
+                    <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg flex items-center justify-center">
+                      <Carousel className="w-full h-full">
+                        <CarouselContent>
+                          {displayImages.map((img, idx) => (
+                            <CarouselItem
+                              key={idx}
+                              className="w-full h-96 md:h-[500px] flex items-center justify-center"
+                            >
+                              <div className="relative w-full h-96 md:h-[500px]">
+                                <Image
+                                  src={img}
+                                  alt={`${project.title} - Image ${idx + 1}`}
+                                  fill
+                                  className="object-cover rounded-lg"
+                                  priority={idx === 0}
+                                />
+                              </div>
+                            </CarouselItem>
                           ))}
-                        </div>
-                      </>
-                    )}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 z-10" />
+                        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 z-10" />
+                      </Carousel>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

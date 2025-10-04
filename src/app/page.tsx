@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/card";
 
 interface Project {
-  id: string;
+  _id: string;
   title: string;
   slug: string;
   description: string;
@@ -44,33 +44,6 @@ interface Project {
   updatedAt: Date;
   createdAt: Date;
 }
-
-const latestPosts = [
-  {
-    id: "1",
-    title: "Building a Type-Safe API with tRPC and Next.js",
-    excerpt:
-      "Learn how to create a fully type-safe API using tRPC in your Next.js applications for improved developer experience and fewer runtime errors.",
-    publishedAt: "2023-04-15",
-    slug: "type-safe-api-trpc-nextjs",
-  },
-  {
-    id: "2",
-    title: "Optimizing React Performance with Memo and useCallback",
-    excerpt:
-      "Dive deep into React's performance optimization techniques using React.memo, useMemo, and useCallback to prevent unnecessary renders.",
-    publishedAt: "2023-03-22",
-    slug: "react-performance-memo-usecallback",
-  },
-  {
-    id: "3",
-    title: "Implementing Authentication in Next.js Applications",
-    excerpt:
-      "A comprehensive guide to implementing secure authentication in your Next.js applications using NextAuth.js.",
-    publishedAt: "2023-02-10",
-    slug: "nextjs-authentication-guide",
-  },
-];
 
 // Animations
 const fadeIn = {
@@ -227,7 +200,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* <motion.div
+            <motion.div
               className="flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -279,7 +252,7 @@ export default function Home() {
                   <span className="text-2xl">🚀</span>
                 </motion.div>
               </div>
-            </motion.div> */}
+            </motion.div>
 
             {/* <RobotSpline /> */}
           </div>
@@ -395,7 +368,7 @@ export default function Home() {
               >
                 {featuredProjects.map((project, index) => (
                   <motion.div
-                    key={project.id}
+                    key={project._id}
                     variants={fadeIn}
                     className="group"
                     initial={{ opacity: 0, y: 30 }}
@@ -473,7 +446,7 @@ export default function Home() {
                           className="w-full group/btn rounded-full hover:bg-primary/10"
                         >
                           <Link
-                            href={`/projects/${project.id}`}
+                            href={`/projects/${project._id}`}
                             className="flex items-center justify-center gap-2"
                           >
                             View Details
