@@ -27,7 +27,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="border-t bg-background flex justify-center px-5">
+    <footer className="border-t border-primary bg-background flex justify-center px-5">
       <div className="container py-12 md:py-16 flex flex-col gap-8 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
@@ -133,7 +133,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t pt-6 flex flex-col md:flex-row justify-between gap-4">
+        <div className="border-t border-primary pt-6 flex flex-col md:flex-row justify-between gap-4">
           <p className="text-sm text-muted-foreground">
             &copy; {currentYear} Made by Wael. All rights reserved.
           </p>

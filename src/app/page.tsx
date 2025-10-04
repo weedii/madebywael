@@ -12,6 +12,7 @@ import {
   Star,
   ExternalLink,
   Download,
+  X,
 } from "lucide-react";
 
 import { MainLayout } from "@/components/common/main-layout";
@@ -156,6 +157,7 @@ export default function Home() {
 
                 <DownloadResumeButton />
               </div>
+
               <div className="flex gap-5 pt-6 items-center">
                 {userProfile?.githubUrl && (
                   <a
@@ -167,6 +169,7 @@ export default function Home() {
                     <Github className="h-5 w-5" />
                   </a>
                 )}
+
                 {userProfile?.linkedinUrl && (
                   <a
                     href={userProfile.linkedinUrl}
@@ -177,6 +180,7 @@ export default function Home() {
                     <FileText className="h-5 w-5" />
                   </a>
                 )}
+
                 {userProfile?.xUrl && (
                   <a
                     href={userProfile.xUrl}
@@ -184,14 +188,15 @@ export default function Home() {
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors hover-scale"
                   >
-                    <Code className="h-5 w-5" />
+                    <X className="h-5 w-5" />
                   </a>
                 )}
+
                 {(userProfile?.githubUrl ||
                   userProfile?.linkedinUrl ||
                   userProfile?.xUrl) && (
                   <>
-                    <div className="h-5 w-px bg-border mx-1"></div>
+                    <div className="h-5 w-px bg-primary mx-1"></div>
                     <span className="text-sm text-muted-foreground">
                       Let's connect
                     </span>
@@ -258,71 +263,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Skills Section */}
-      {/* <section className="py-20 md:py-28 bg-muted/30 flex justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] dark:opacity-[0.03]"></div>
-        <div className="absolute right-0 bottom-0 w-1/3 h-1/2 bg-primary/5 blur-[120px] rounded-full"></div>
-        <div className="container px-4 md:px-6 relative z-10">
-          <motion.div
-            className="flex flex-col items-center justify-center space-y-6 text-center"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-          >
-            <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary glass-effect">
-              What I work with
-            </div>
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gradient">
-                Skills & Technologies
-              </h2>
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Technologies I've been working with recently
-              </p>
-            </div>
-            <div className="mx-auto grid max-w-5xl grid-cols-3 gap-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 pt-12">
-              {[
-                { name: "TypeScript", icon: "📝", delay: 0 },
-                { name: "React", icon: "⚛️", delay: 0.1 },
-                { name: "Next.js", icon: "▲", delay: 0.2 },
-                { name: "Node.js", icon: "🟢", delay: 0.3 },
-                { name: "MongoDB", icon: "🍃", delay: 0.4 },
-                { name: "Tailwind CSS", icon: "🌊", delay: 0.5 },
-                { name: "GraphQL", icon: "📊", delay: 0.6 },
-                { name: "Redux", icon: "🔄", delay: 0.7 },
-                { name: "Express", icon: "🚂", delay: 0.8 },
-                { name: "PostgreSQL", icon: "🐘", delay: 0.9 },
-                { name: "AWS", icon: "☁️", delay: 1.0 },
-                { name: "Git", icon: "🔄", delay: 1.1 },
-              ].map((skill) => (
-                <motion.div
-                  key={skill.name}
-                  className="flex flex-col items-center justify-center rounded-xl glass-effect p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:shadow-primary/10 hover:border-primary/30 group"
-                  whileHover={{ y: -5, scale: 1.05 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 15,
-                    delay: skill.delay * 0.1,
-                  }}
-                >
-                  <span className="text-2xl mb-2 group-hover:animate-bounce">
-                    {skill.icon}
-                  </span>
-                  <span className="text-sm font-medium group-hover:text-primary transition-colors">
-                    {skill.name}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section> */}
 
       {/* Featured Projects Section */}
       <section className="py-20 md:py-28 flex justify-center relative overflow-hidden">

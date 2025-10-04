@@ -189,7 +189,7 @@ export default function ProjectsPage() {
       )}
 
       {/* Projects Grid */}
-      <section className="py-8 md:py-12 flex justify-center">
+      <section className="py-8 md:py-12 flex justify-center min-h-screen">
         <div className="container px-4 md:px-6">
           <motion.div
             className="mx-auto grid max-w-5xl grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3"
@@ -207,7 +207,9 @@ export default function ProjectsPage() {
                 >
                   <div
                     className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/30 to-primary/10 blur-md animate-float"
-                    style={{ animationDelay: `${parseInt(project._id) * 0.2}s` }}
+                    style={{
+                      animationDelay: `${parseInt(project._id) * 0.2}s`,
+                    }}
                   ></div>
 
                   <Card className="overflow-hidden h-full flex flex-col border-none relative">

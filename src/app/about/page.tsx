@@ -151,6 +151,7 @@ export default function AboutPage() {
                     "Full-stack Developer passionate about building scalable web applications with modern technologies and delivering exceptional user experiences."}
                 </p>
               </div>
+
               <div className="space-y-4">
                 {settings?.aboutPageContent && (
                   <p className="leading-relaxed">{settings.aboutPageContent}</p>
@@ -173,35 +174,8 @@ export default function AboutPage() {
                     </p>
                   </>
                 )}
-
-                {skills &&
-                  (skills.languages.length > 0 ||
-                    skills.frameworksAndStack.length > 0 ||
-                    skills.toolsAndServices.length > 0) && (
-                    <div className="pt-4">
-                      <h3 className="text-lg font-semibold mb-3">
-                        Core Technologies
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {[
-                          ...skills.languages.slice(0, 4),
-                          ...skills.frameworksAndStack.slice(0, 4),
-                        ].map((skill) => (
-                          <Badge
-                            key={skill}
-                            variant="secondary"
-                            className="text-sm"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                        <Badge variant="outline" className="text-sm">
-                          +more
-                        </Badge>
-                      </div>
-                    </div>
-                  )}
               </div>
+
               <div className="flex gap-4 pt-4">
                 <Button asChild>
                   <Link href="/contact">
@@ -213,6 +187,7 @@ export default function AboutPage() {
                 <DownloadResumeButton />
               </div>
             </motion.div>
+
             <motion.div
               className="flex items-center justify-center"
               initial="hidden"
@@ -358,10 +333,16 @@ export default function AboutPage() {
                 }}
               >
                 {/* Fallback when no skills data is available */}
-                <motion.div variants={fadeIn} className="col-span-full text-center">
-                  <h3 className="text-xl font-bold mb-2">No Skills Added Yet</h3>
+                <motion.div
+                  variants={fadeIn}
+                  className="col-span-full text-center"
+                >
+                  <h3 className="text-xl font-bold mb-2">
+                    No Skills Added Yet
+                  </h3>
                   <p className="text-muted-foreground">
-                    Skills and technologies will appear here once they are added. Check back soon!
+                    Skills and technologies will appear here once they are
+                    added. Check back soon!
                   </p>
                 </motion.div>
               </motion.div>

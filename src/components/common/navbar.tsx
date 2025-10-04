@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -42,7 +41,7 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full border-b transition-all duration-300 flex justify-center ${
+      className={`sticky top-0 z-50 w-full border-b border-primary transition-all duration-300 flex justify-center ${
         scrolled
           ? "bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 shadow-sm"
           : "bg-background/50 backdrop-blur-sm"
@@ -63,6 +62,7 @@ export function Navbar() {
               height={40}
               className="mt-1 group-hover:scale-110 transition-transform duration-300"
             />
+
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-green-600 group-hover:scale-105 transition-transform duration-300">
               madebywael
             </span>
@@ -96,12 +96,14 @@ export function Navbar() {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
-          <ThemeToggle />
+
+          {/* <ThemeToggle /> */}
         </motion.nav>
 
         {/* Mobile Navigation Button */}
         <div className="flex md:hidden items-center gap-4">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
+
           <Button
             variant="ghost"
             size="icon"
