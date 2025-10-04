@@ -180,12 +180,12 @@ export default function ProjectDetailsPage() {
   return (
     <MainLayout className="flex flex-col items-center justify-center gap-10">
       {/* Back Navigation */}
-      <section className="py-6 w-[85vw]">
+      <section className="py-6  w-full lg:w-[85vw]">
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={slideIn}>
-            <Button variant="ghost" asChild className="mb-6">
+            <Button variant="ghost" asChild className="mb-6 flex items-center justify-start">
               <Link href="/projects">
-                <ArrowLeft className="mr-2 h-4 w-4" />
+                <ArrowLeft className="mt-1 h-4 w-4" />
                 Back to Projects
               </Link>
             </Button>
@@ -194,7 +194,7 @@ export default function ProjectDetailsPage() {
       </section>
 
       {/* Project Header */}
-      <section className="w-[70vw]">
+      <section className="w-full lg:w-[70vw] px-4">
         <div className="container">
           <motion.div
             className="w-full h-full"
@@ -248,7 +248,7 @@ export default function ProjectDetailsPage() {
 
       {/* Project Images */}
       {displayImages.length > 0 && (
-        <section className="w-[70vw] flex items-center justify-center">
+        <section className="w-full lg:w-[70vw] px-4 flex items-center justify-center">
           <div className="container">
             <motion.div
               className="w-full h-full"
@@ -293,7 +293,7 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* Project Content */}
-      <section className="w-[70vw] mb-20">
+      <section className="w-full lg:w-[70vw] px-4 mb-20">
         <div className="container">
           <motion.div
             className="w-full h-full"

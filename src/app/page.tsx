@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Download,
   X,
+  Linkedin,
 } from "lucide-react";
 
 import { MainLayout } from "@/components/common/main-layout";
@@ -141,10 +142,18 @@ export default function Home() {
                   </p>
                 </div>
 
-                <p className="max-w-[600px] text-muted-foreground md:text-xl leading-relaxed">
-                  {userProfile?.bio ||
-                    "Software Engineer specialized in building beautiful, accessible, and performant web applications with modern technologies."}
-                </p>
+                {userProfile ? (
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="max-w-[600px] text-muted-foreground md:text-xl leading-relaxed"
+                  >
+                    {userProfile?.bio || ""}
+                  </motion.p>
+                ) : (
+                  <div className="w-5 h-5 pt-14"></div>
+                )}
               </div>
 
               <div className="flex flex-col gap-3 min-[400px]:flex-row pt-4">
@@ -158,51 +167,60 @@ export default function Home() {
                 <DownloadResumeButton />
               </div>
 
-              <div className="flex gap-5 pt-6 items-center">
-                {userProfile?.githubUrl && (
-                  <a
-                    href={userProfile.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors hover-scale"
-                  >
-                    <Github className="h-5 w-5" />
-                  </a>
-                )}
+              {userProfile ? (
+                <motion.div
+                  className="flex gap-5 pt-6 items-center"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  {userProfile?.githubUrl && (
+                    <a
+                      href={userProfile.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors hover-scale"
+                    >
+                      <Github className="h-5 w-5" />
+                    </a>
+                  )}
 
-                {userProfile?.linkedinUrl && (
-                  <a
-                    href={userProfile.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors hover-scale"
-                  >
-                    <FileText className="h-5 w-5" />
-                  </a>
-                )}
+                  {userProfile?.linkedinUrl && (
+                    <a
+                      href={userProfile.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors hover-scale"
+                    >
+                      <Linkedin className="h-5 w-5" />
+                    </a>
+                  )}
 
-                {userProfile?.xUrl && (
-                  <a
-                    href={userProfile.xUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors hover-scale"
-                  >
-                    <X className="h-5 w-5" />
-                  </a>
-                )}
+                  {userProfile?.xUrl && (
+                    <a
+                      href={userProfile.xUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors hover-scale"
+                    >
+                      <X className="h-5 w-5" />
+                    </a>
+                  )}
 
-                {(userProfile?.githubUrl ||
-                  userProfile?.linkedinUrl ||
-                  userProfile?.xUrl) && (
-                  <>
-                    <div className="h-5 w-px bg-primary mx-1"></div>
-                    <span className="text-sm text-muted-foreground">
-                      Let's connect
-                    </span>
-                  </>
-                )}
-              </div>
+                  {(userProfile?.githubUrl ||
+                    userProfile?.linkedinUrl ||
+                    userProfile?.xUrl) && (
+                    <>
+                      <div className="h-5 w-px bg-primary mx-1"></div>
+                      <span className="text-sm text-muted-foreground">
+                        Let's connect
+                      </span>
+                    </>
+                  )}
+                </motion.div>
+              ) : (
+                <div className="h-5 w-5 pt-12"></div>
+              )}
             </motion.div>
 
             <motion.div

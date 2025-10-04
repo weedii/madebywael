@@ -137,20 +137,6 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             &copy; {currentYear} Made by Wael. All rights reserved.
           </p>
-          <div className="flex gap-4">
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Terms of Service
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
