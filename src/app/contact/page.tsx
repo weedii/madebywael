@@ -17,7 +17,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { validateEmailFormat, validateRequiredFields } from "@/lib/validate_email_formatting";
+import {
+  validateEmailFormat,
+  validateRequiredFields,
+} from "@/lib/validate_email_formatting";
 
 // Animation variants
 const fadeIn = {
@@ -77,13 +80,13 @@ export default function ContactPage() {
       lastName,
       email,
       subject,
-      message
+      message,
     });
 
     if (!fieldValidation.isValid) {
       toast({
         title: "Missing Required Fields",
-        description: `Please fill in: ${fieldValidation.missingFields.join(', ')}`,
+        description: `Please fill in: ${fieldValidation.missingFields.join(", ")}`,
         variant: "destructive",
       });
       return;
@@ -101,10 +104,10 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           firstName,
@@ -128,14 +131,16 @@ export default function ContactPage() {
       } else {
         toast({
           title: "Failed to Send Message",
-          description: responseData.error || "Something went wrong. Please try again.",
+          description:
+            responseData.error || "Something went wrong. Please try again.",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
         title: "Connection Error",
-        description: "Unable to send message. Please check your connection and try again.",
+        description:
+          "Unable to send message. Please check your connection and try again.",
         variant: "destructive",
       });
     } finally {
@@ -229,9 +234,9 @@ export default function ContactPage() {
                         required
                       />
                     </div>
-                    <Button 
-                      type="submit" 
-                      className="w-full" 
+                    <Button
+                      type="submit"
+                      className="w-full"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
