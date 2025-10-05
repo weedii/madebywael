@@ -17,7 +17,6 @@ import {
 import { MainLayout } from "@/components/common/main-layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { DownloadResumeButton } from "@/components/common/download-resume-button";
 
 // Interfaces for the data
@@ -134,78 +133,78 @@ export default function AboutPage() {
     <MainLayout>
       {/* Hero Section */}
       <section className="py-12 md:py-24 flex justify-center">
-        <div className="container px-4 md:px-6 max-w-7xl">
-          <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_450px] items-center">
-            <motion.div
-              className="flex flex-col justify-center space-y-4"
-              initial="hidden"
-              animate="visible"
-              variants={fadeInLeft}
-            >
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  About {userProfile?.fullName || "Wael Abidi"}
-                </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  {userProfile?.bio ||
-                    "Full-stack Developer passionate about building scalable web applications with modern technologies and delivering exceptional user experiences."}
-                </p>
-              </div>
+        {/* <div className="container px-4 md:px-6 max-w-7xl"> */}
+        <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_450px] items-center px-4 lg:px-16">
+          <motion.div
+            className="flex flex-col justify-center space-y-4 text-center lg:text-start"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInLeft}
+          >
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                About {userProfile?.fullName || "Wael Abidi"}
+              </h1>
+              <p className="lg:max-w-[600px] text-muted-foreground md:text-xl">
+                {userProfile?.bio ||
+                  "Full-stack Developer passionate about building scalable web applications with modern technologies and delivering exceptional user experiences."}
+              </p>
+            </div>
 
-              <div className="space-y-4">
-                {settings?.aboutPageContent && (
-                  <p className="leading-relaxed">{settings.aboutPageContent}</p>
-                )}
+            <div className="space-y-4">
+              {settings?.aboutPageContent && (
+                <p className="leading-relaxed">{settings.aboutPageContent}</p>
+              )}
 
-                {!settings?.aboutPageContent && (
-                  <>
-                    <p className="leading-relaxed">
-                      I'm a dedicated full-stack developer with professional
-                      experience in both frontend and backend development. I
-                      specialize in building robust applications using modern
-                      web technologies and development practices.
-                    </p>
-                    <p className="leading-relaxed">
-                      My expertise spans across multiple technologies, and I'm
-                      passionate about creating efficient solutions and
-                      comprehensive web applications. I believe in writing
-                      clean, maintainable code that follows industry best
-                      practices.
-                    </p>
-                  </>
-                )}
-              </div>
+              {!settings?.aboutPageContent && (
+                <>
+                  <p className="leading-relaxed">
+                    I'm a dedicated full-stack developer with professional
+                    experience in both frontend and backend development. I
+                    specialize in building robust applications using modern web
+                    technologies and development practices.
+                  </p>
+                  <p className="leading-relaxed">
+                    My expertise spans across multiple technologies, and I'm
+                    passionate about creating efficient solutions and
+                    comprehensive web applications. I believe in writing clean,
+                    maintainable code that follows industry best practices.
+                  </p>
+                </>
+              )}
+            </div>
 
-              <div className="flex gap-4 pt-4">
-                <Button asChild>
-                  <Link href="/contact">
-                    Get in Touch
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+            <div className="flex gap-4 pt-4 items-center justify-center lg:justify-start">
+              <Button asChild>
+                <Link href="/contact" className="flex items-center">
+                  <span>Get in Touch</span>
+                  <ArrowRight className="h-4 w-4 mt-1" />
+                </Link>
+              </Button>
 
-                <DownloadResumeButton />
-              </div>
-            </motion.div>
+              <DownloadResumeButton />
+            </div>
+          </motion.div>
 
-            <motion.div
-              className="flex items-center justify-center"
-              initial="hidden"
-              animate="visible"
-              variants={fadeInRight}
-            >
-              <div className="relative h-[350px] w-[350px] sm:h-[400px] sm:w-[400px]">
-                <Image
-                  src="/me.jpg"
-                  alt="Wael Abidi - Full-stack Developer"
-                  fill
-                  className="object-cover rounded-2xl"
-                  priority
-                />
-              </div>
-            </motion.div>
-          </div>
+          {/* Image */}
+          <motion.div
+            className="flex items-center justify-center"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInRight}
+          >
+            <div className="relative h-[350px] w-[350px] sm:h-[400px] sm:w-[400px]">
+              <Image
+                src="/me.jpg"
+                alt="Wael Abidi - Full-stack Developer"
+                fill
+                className="object-cover rounded-2xl"
+                priority
+              />
+            </div>
+          </motion.div>
         </div>
+        {/* </div> */}
       </section>
 
       {/* Skills Section */}
