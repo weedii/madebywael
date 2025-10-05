@@ -16,7 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { validateEmailFormat, validateRequiredFields } from "@/lib/validate_email_formatting";
 
 // Animation variants
 const fadeIn = {
@@ -32,6 +33,7 @@ export default function ContactPage() {
   const { toast } = useToast();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Load user profile
   useEffect(() => {
@@ -56,18 +58,89 @@ export default function ContactPage() {
     loadData();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // In a real application, you would handle form submission here
-    // For now, we'll just show a success toast
-    toast({
-      title: "Message sent!",
-      description: "Thanks for reaching out. I'll get back to you soon.",
+    if (isSubmitting) return; // Prevent double submission
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
+    const email = formData.get("email") as string;
+    const subject = formData.get("subject") as string;
+    const message = formData.get("message") as string;
+
+    // validation
+    const fieldValidation = validateRequiredFields({
+      firstName,
+      lastName,
+      email,
+      subject,
+      message
     });
 
-    // Reset the form
-    e.currentTarget.reset();
+    if (!fieldValidation.isValid) {
+      toast({
+        title: "Missing Required Fields",
+        description: `Please fill in: ${fieldValidation.missingFields.join(', ')}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!validateEmailFormat(email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          subject,
+          message,
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Message Sent Successfully! ✅",
+          description: "Thanks for reaching out. I'll get back to you soon.",
+        });
+
+        // Reset the form
+        form.reset();
+      } else {
+        toast({
+          title: "Failed to Send Message",
+          description: responseData.error || "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Connection Error",
+        description: "Unable to send message. Please check your connection and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -112,6 +185,7 @@ export default function ContactPage() {
                         <Label htmlFor="first-name">First name</Label>
                         <Input
                           id="first-name"
+                          name="firstName"
                           placeholder="Enter your first name"
                           required
                         />
@@ -120,6 +194,7 @@ export default function ContactPage() {
                         <Label htmlFor="last-name">Last name</Label>
                         <Input
                           id="last-name"
+                          name="lastName"
                           placeholder="Enter your last name"
                           required
                         />
@@ -129,6 +204,7 @@ export default function ContactPage() {
                       <Label htmlFor="email">Email</Label>
                       <Input
                         id="email"
+                        name="email"
                         type="email"
                         placeholder="Enter your email"
                         required
@@ -138,6 +214,7 @@ export default function ContactPage() {
                       <Label htmlFor="subject">Subject</Label>
                       <Input
                         id="subject"
+                        name="subject"
                         placeholder="Enter the subject"
                         required
                       />
@@ -146,13 +223,25 @@ export default function ContactPage() {
                       <Label htmlFor="message">Message</Label>
                       <Textarea
                         id="message"
+                        name="message"
                         placeholder="Enter your message"
                         className="min-h-[150px]"
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full">
-                      Send Message
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Sending...
+                        </>
+                      ) : (
+                        "Send Message"
+                      )}
                     </Button>
                   </form>
                 </CardContent>
